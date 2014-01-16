@@ -1,0 +1,25 @@
+{
+  "name": "Gulp-scaffold",
+  "version": "0.0.1",
+  "description": "Gulp-scaffold",
+  "main": "index.html",
+  "author": "Igor Pnev",
+  "license": "BSD",
+  "devDependencies": {
+    "gulp-livereload": "~0.2.0",
+    "tiny-lr": "0.0.5",
+    "gulp": "~3.3.1",
+    "gulp-stylus": "0.0.9",
+    "connect": "~2.12.0",
+    "gulp-csso": "~0.1.7",
+    "gulp-jade": "~0.3.0",
+    "connect-livereload": "~0.3.2",
+    "gulp-uglify": "~0.1.0",
+    "gulp-concat": "~2.1.7",
+    "gulp-autoprefixer": "*",
+    "gulp-svgmin": "~0.4.0",
+    "gulp-zip": "~0.1.1",
+    "jpegtran-bin": "0.2.0",
+    "gulp-imagemin": "~0.1.4"
+  }
+}
