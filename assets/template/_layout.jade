@@ -1,14 +1,23 @@
-doctype
-html
-  head
-    link(href='./css/screen.css', type="text/css", rel="stylesheet")
+doctype html
+//if lt IE 7
+	<html class="no-js lt-ie9 lt-ie8 lt-ie7">
+//if IE 7
+	<html class="no-js lt-ie9 lt-ie8">
+//if IE 8
+	<html class="no-js lt-ie9">
+//[if gt IE 8]><!
+html.no-js
+	//<![endif]
+	head
+		include includes/header
 
-        
-    //if lte IE 8
-      link(href=css.ie, type="text/css", rel="stylesheet")
+	body
+		//if lt IE 8
+			p.browsehappy
+				| You are using an <strong>outdated</strong> browser.
+				| Please <a href="http://browsehappy.com/">upgrade your browser</a>
+				| to improve your experience.
 
-    title Gulp Scaffold
-  body
-    block content
+		block content
 
-    script(src='./js/index.js')
+		include includes/footer

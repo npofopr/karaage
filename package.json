@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Gulp-scaffold",
   "main": "index.html",
-  "author": "Igor Pnev",
+  "author": "Vladislav Altyncev",
   "license": "BSD",
   "devDependencies": {
     "gulp-livereload": "~0.2.0",
@@ -20,6 +20,9 @@
     "gulp-svgmin": "~0.4.0",
     "gulp-zip": "~0.1.1",
     "jpegtran-bin": "0.2.0",
-    "gulp-imagemin": "~0.1.4"
+    "gulp-imagemin": "~0.1.4",
+    "gulp-rename": "~0.2.2",
+    "gulp-clean": "~0.2.4",
+    "gulp-cache": "~0.1.1"
   }
 }

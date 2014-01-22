@@ -8,8 +8,11 @@ var lr = require('tiny-lr'), // Минивебсервер для livereload
     csso = require('gulp-csso'), // Минификация CSS
     imagemin = require('gulp-imagemin'), // Минификация изображений
     svgmin = require('gulp-svgmin'), // Минификация svg
+    rename = require('gulp-rename'),
+    clean = require('gulp-clean'),
     uglify = require('gulp-uglify'), // Минификация JS
     concat = require('gulp-concat'), // Склейка файлов
+    cache = require('gulp-cache'),
     //zip = require('gulp-zip'); // Архив собранного проекта
     connect = require('connect'), // Webserver
     server = lr();
@@ -40,7 +43,7 @@ gulp.task('jade', function() {
 
 // Собираем JS
 gulp.task('js', function() {
-    gulp.src(['./assets/js/**/*.js', '!./assets/js/vendor/**/*.js'])
+    gulp.src(['./assets/js/**/*.js', '!./assets/js/libs/**/*.js'])
         .pipe(concat('index.js')) // Собираем все JS, кроме тех которые находятся в ./assets/js/vendor/**
         .pipe(gulp.dest('./public/js'))
         .pipe(livereload(server)); // даем команду на перезагрузку страницы
@@ -49,8 +52,9 @@ gulp.task('js', function() {
 
 // Копируем и минимизируем изображения
 gulp.task('images', function() {
-    gulp.src('./assets/img/**/*')
-        .pipe(imagemin())
+    gulp.src(['./assets/img/**/*', '!./assets/img/**/*.svg'])
+        .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
+        .pipe(livereload(server))
         .pipe(gulp.dest('./public/img'))
 });
 
@@ -67,6 +71,13 @@ gulp.task('svgmin', function() {
         .pipe(zip('archive.zip'))
         .pipe(gulp.dest('./build'));
 });*/
+
+
+// Clean
+gulp.task('clean', function() {
+    return gulp.src(['build/css', 'build/js', 'build/img'], {read: false})
+        .pipe(clean());
+});
 
 
 // Локальный сервер для разработки
@@ -113,38 +124,38 @@ gulp.task('watch', function() {
 });
 
 
-gulp.task('build', function() {
+gulp.task('build', ['clean'], function() {
     // css
     gulp.src('./assets/styles/**/*.styl')
         .pipe(stylus()) // собираем stylus
-        .pipe(concat('allstyles.min.css'))
         .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
+        .pipe(gulp.dest('./public/css/')) // записываем css
+        //.pipe(concat('allstyles.css'))
+        .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
+        .pipe(gulp.dest('./build/css/'))
+        .pipe(rename("allstyles.min.css"))
         .pipe(csso()) // минимизируем css
         .pipe(gulp.dest('./build/css/')) // записываем css
 
     // jade
     gulp.src(['./assets/template/*.jade', '!./assets/template/_*.jade'])
         .pipe(jade())
-        .pipe(gulp.dest('./build/'))
+        .pipe(gulp.dest('./build/'));
 
     // js
-    gulp.src(['./assets/js/**/*.js', '!./assets/js/vendor/**/*.js'])
+    gulp.src(['./assets/js/**/*.js', '!./assets/js/libs/**/*.js'])
         .pipe(gulp.dest('./build/js'))
         .pipe(concat('allscripts.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./build/js'));
 
     // image
-    gulp.src('./assets/img/**/*')
-        .pipe(imagemin())
-        .pipe(gulp.dest('./build/img'))
+    gulp.src(['./assets/img/**/*', '!./assets/img/**/*.svg'])
+        .pipe(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true }))
+        .pipe(gulp.dest('./build/img'));
 
-    gulp.src(['./assets/img/**/*.svg'])
+    gulp.src('./assets/img/**/*.svg')
         .pipe(svgmin())
-        .pipe(gulp.dest('./build/img'))
-
-    /*gulp.src(['./assets/*'])
-        .pipe(zip('archive.zip'))
-        .pipe(gulp.dest('./build'))*/
+        .pipe(gulp.dest('./build/img'));
 
 });

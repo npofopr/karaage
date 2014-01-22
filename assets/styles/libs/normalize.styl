@@ -1,4 +1,4 @@
-/*! normalize.css v2.1.0 | MIT License | git.io/normalize */
+/*! normalize.css v2.1.3 | MIT License | git.io/normalize */
 
 /* ==========================================================================
    HTML5 display definitions
@@ -8,24 +8,17 @@
  * Correct `block` display not defined in IE 8/9.
  */
 
- 
-*
-  box-sizing border-box
-  
-html
-  font-size 62.5% !important
-   
-article
-aside
-details
-figcaption
-figure
-footer
-header
-hgroup
-main
-nav
-section
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
 summary
   display: block
 
@@ -33,8 +26,8 @@ summary
  * Correct `inline-block` display not defined in IE 8/9.
  */
 
-audio
-canvas
+audio,
+canvas,
 video
   display: inline-block
 
@@ -48,10 +41,12 @@ audio:not([controls])
   height: 0
 
 /**
- * Address styling not present in IE 8/9.
+ * Address `[hidden]` styling not present in IE 8/9.
+ * Hide the `template` element in IE, Safari, and Firefox < 22.
  */
 
-[hidden]
+[hidden],
+template
   display: none
 
 /* ==========================================================================
@@ -65,9 +60,9 @@ audio:not([controls])
  */
 
 html
-  font-family: sans-serif; /* 1 */
-  -webkit-text-size-adjust: 100%; /* 2 */
-  -ms-text-size-adjust: 100%; /* 2 */
+  font-family: sans-serif // 1
+  -ms-text-size-adjust: 100% // 2
+  -webkit-text-size-adjust: 100% // 2
 
 /**
  * Remove default margin.
@@ -81,19 +76,18 @@ body
    ========================================================================== */
 
 /**
- * Address `outline` inconsistency between Chrome and other browsers.
+ * 1. Remove the gray background color from active links in IE 10.
+ * 2. Address `outline` inconsistency between Chrome and other browsers.
+ * 3. Improve readability when focused and also mouse hovered in all browsers.
  */
 
-a:focus
-    outline: thin dotted
-
-/**
- * Improve readability when focused and also mouse hovered in all browsers.
- */
-
-a:active
-a:hover
-  outline: 0
+a
+  background: transparent // 1
+  &:focus
+    outline: thin dotted // 2
+  &:active,
+  &:hover
+    outline: 0 // 3
 
 /* ==========================================================================
    Typography
@@ -104,10 +98,9 @@ a:hover
  * contexts in Firefox 4+, Safari 5, and Chrome.
  */
 
-h1,h2,h3,h4,h5,h6,p
-  margin 0
-  padding 0
-
+h1
+  font-size: 2em
+  margin: 0.67em 0
 
 /**
  * Address styling not present in IE 8/9, Safari 5, and Chrome.
@@ -120,7 +113,7 @@ abbr[title]
  * Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
  */
 
-b
+b,
 strong
   font-weight: bold
 
@@ -136,7 +129,6 @@ dfn
  */
 
 hr
-  -moz-box-sizing: content-box
   box-sizing: content-box
   height: 0
 
@@ -152,12 +144,12 @@ mark
  * Correct font family set oddly in Safari 5 and Chrome.
  */
 
-code
-kbd
-pre
+code,
+kbd,
+pre,
 samp
   font-family: monospace, serif
-  
+  font-size: 1em
 
 /**
  * Improve readability of pre-formatted text in all browsers.
@@ -177,15 +169,16 @@ q
  * Address inconsistent and variable font size in all browsers.
  */
 
-
+small
+  font-size: 80%
 
 /**
  * Prevent `sub` and `sup` affecting `line-height` in all browsers.
  */
 
-sub
+sub,
 sup
-
+  font-size: 75%
   line-height: 0
   position: relative
   vertical-align: baseline
@@ -235,6 +228,8 @@ figure
 
 fieldset
   border: 1px solid #c0c0c0
+  margin: 0 2px
+  padding: 0.35em 0.625em 0.75em
 
 /**
  * 1. Correct `color` not being inherited in IE 8/9.
@@ -242,8 +237,8 @@ fieldset
  */
 
 legend
-  border: 0; /* 1 */
-  padding: 0; /* 2 */
+  border: 0 // 1
+  padding: 0 // 2
 
 /**
  * 1. Correct font family not being inherited in all browsers.
@@ -251,19 +246,20 @@ legend
  * 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
  */
 
-button
-input
-select
+button,
+input,
+select,
 textarea
-  font-family: inherit; /* 1 */
-  margin: 0; /* 3 */
+  font-family: inherit // 1
+  font-size: 100% // 2
+  margin: 0 // 3
 
 /**
  * Address Firefox 4+ setting `line-height` on `input` using `!important` in
  * the UA stylesheet.
  */
 
-button
+button,
 input
   line-height: normal
 
@@ -274,7 +270,7 @@ input
  * Correct `select` style inheritance in Firefox 4+ and Opera.
  */
 
-button
+button,
 select
   text-transform: none
 
@@ -286,29 +282,30 @@ select
  *    `input` and others.
  */
 
-button
-html input[type="button"]
-input[type="reset"]
+button,
+html input[type="button"], // 1
+input[type="reset"],
 input[type="submit"]
-  -webkit-appearance: button; /* 2 */
-  cursor: pointer; /* 3 */
+  -webkit-appearance: button // 2
+  cursor: pointer // 3
 
 /**
  * Re-set default cursor for disabled elements.
  */
 
-button[disabled]
+button[disabled],
 html input[disabled]
   cursor: default
 
 /**
- * 1. Address box sizing set to `content-box` in IE 8/9.
- * 2. Remove excess padding in IE 8/9.
+ * 1. Address box sizing set to `content-box` in IE 8/9/10.
+ * 2. Remove excess padding in IE 8/9/10.
  */
 
-input[type="checkbox"]
+input[type="checkbox"],
 input[type="radio"]
-  padding: 0; /* 2 */
+  box-sizing: border-box // 1
+  padding: 0 // 2
 
 /**
  * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
@@ -317,17 +314,15 @@ input[type="radio"]
  */
 
 input[type="search"]
-  -webkit-appearance: textfield; /* 1 */
-  -moz-box-sizing: content-box
-  -webkit-box-sizing: content-box; /* 2 */
-  box-sizing: content-box
+  -webkit-appearance: textfield // 1
+  box-sizing: content-box // 2
 
 /**
  * Remove inner padding and search cancel button in Safari 5 and Chrome
  * on OS X.
  */
 
-input[type="search"]::-webkit-search-cancel-button
+input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration
   -webkit-appearance: none
 
@@ -335,7 +330,7 @@ input[type="search"]::-webkit-search-decoration
  * Remove inner padding and border in Firefox 4+.
  */
 
-button::-moz-focus-inner
+button::-moz-focus-inner,
 input::-moz-focus-inner
   border: 0
   padding: 0
@@ -346,8 +341,8 @@ input::-moz-focus-inner
  */
 
 textarea
-  overflow: auto; /* 1 */
-  vertical-align: top; /* 2 */
+  overflow: auto // 1
+  vertical-align: top // 2
 
 /* ==========================================================================
    Tables
