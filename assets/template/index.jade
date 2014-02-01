@@ -1,7 +1,24 @@
 extends _layout
 
 block content
-	.main
-		h1 Gulp JS scaffold
 
-		p.npofopr test live
+	include includes/header
+	
+	.container
+		.main_slider
+			| main slider
+
+	.container
+		.middle_slider
+			h2 Не пропустите, самые важные события
+			| middle slider 
+
+	.container.middle
+		.row
+			.col-xs-8.col-sm-8.col-md-8.col-lg-8
+				.content
+					h2 Новости и события
+
+			.col-xs-4.col-sm-4.col-md-4.col-lg-4
+				.sidebar
+					| col-4 

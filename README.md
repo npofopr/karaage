@@ -1,6 +1,6 @@
 # Gulp JS
 
-Простой путь разработки с Jade и Stylus + imagemin, svgmin, autoprefixer и конечно минификация.
+Простой путь разработки с Jade и Stylus + imagemin, svgmin, autoprefixer и конечно минификация. Весь html проверяется htmlhint.
 
 sudo npm install -g
 
