@@ -22,6 +22,7 @@
     "gulp-clean": "~0.2.4",
     "gulp-cache": "~0.1.1",
     "jpegtran-bin": "~0.2.3",
-    "gulp-htmlhint": "0.0.7"
+    "gulp-htmlhint": "0.0.7",
+    "gulp-html-prettify": "0.0.1"
   }
 }

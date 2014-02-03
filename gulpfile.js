@@ -3,6 +3,7 @@ var lr = require('tiny-lr'), // Минивебсервер для livereload
     gulp = require('gulp'), // Сообственно Gulp JS
     jade = require('gulp-jade'), // Плагин для Jade
     htmlhint = require('gulp-htmlhint'),
+    prettify = require('gulp-html-prettify'),
     stylus = require('gulp-stylus'), // Плагин для Stylus
     autoprefixer = require('gulp-autoprefixer'), // Расстановка префиксов
     livereload = require('gulp-livereload'), // Livereload для Gulp
@@ -42,7 +43,12 @@ gulp.task('html', function(){
             "spec-char-escape": true
         }))
         .pipe(htmlhint.reporter())
-        .pipe(gulp.dest('public/'))
+        //.pipe(gulp.dest('public/'))
+        .pipe(prettify({
+            indent_char: ' ',
+            indent_size: 4
+        }))
+        .pipe(gulp.dest('build/'))
         .pipe(livereload(server));
 });
 
@@ -53,7 +59,7 @@ gulp.task('jade', function() {
             pretty: true
         }))  // Собираем Jade только в папке ./assets/template/ исключая файлы с _*
         .on('error', console.log) // Если есть ошибки, выводим и продолжаем
-    .pipe(gulp.dest('public/')) // Записываем собранные файлы
+    //.pipe(gulp.dest('public/')) // Записываем собранные файлы
     .pipe(htmlhint({
         "tag-pair": true,
         "style-disabled": true,
@@ -64,6 +70,11 @@ gulp.task('jade', function() {
         "spec-char-escape": true
     }))
     .pipe(htmlhint.reporter())
+    //.pipe(gulp.dest('public/'))
+    .pipe(prettify({
+        indent_char: ' ',
+        indent_size: 4
+    }))
     .pipe(gulp.dest('public/'))
     .pipe(livereload(server)); // даем команду на перезагрузку страницы
 }); 
@@ -196,6 +207,11 @@ gulp.task('build', ['clean'], function() {
                 "spec-char-escape": true
             }))
             .pipe(htmlhint.reporter())
+            //.pipe(gulp.dest('build/'))
+            .pipe(prettify({
+                indent_char: ' ',
+                indent_size: 4
+            }))
             .pipe(gulp.dest('build/'))
             .pipe(livereload(server));
     });
@@ -205,7 +221,7 @@ gulp.task('build', ['clean'], function() {
         .pipe(jade({
             pretty: true
         }))
-    .pipe(gulp.dest('build/')) // Записываем собранные файлы
+    //.pipe(gulp.dest('build/')) // Записываем собранные файлы
     .pipe(htmlhint({
         "tag-pair": true,
         "style-disabled": true,
@@ -216,6 +232,11 @@ gulp.task('build', ['clean'], function() {
         "spec-char-escape": true
     }))
     .pipe(htmlhint.reporter())
+    //.pipe(gulp.dest('build/'))
+    .pipe(prettify({
+        indent_char: ' ',
+        indent_size: 4
+    }))
     .pipe(gulp.dest('build/'))
     .pipe(livereload(server)); // даем команду на перезагрузку страницы
 
