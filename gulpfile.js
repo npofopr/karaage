@@ -48,7 +48,7 @@ gulp.task('html', function(){
             indent_char: ' ',
             indent_size: 4
         }))
-        .pipe(gulp.dest('build/'))
+        .pipe(gulp.dest('public/'))
         .pipe(livereload(server));
 });
 
