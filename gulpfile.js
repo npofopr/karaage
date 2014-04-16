@@ -279,7 +279,8 @@ gulp.task('dev', ['clean'], function() {
         'js',
         'copy:css',
         'copy:js',
-        'copy:images',
+        'images',
+        'svgmin',
         'copy:fonts',
         'copy:files'
     );
