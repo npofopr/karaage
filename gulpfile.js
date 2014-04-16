@@ -1,38 +1,110 @@
-// Инициализируем плагины
-var lr = require('tiny-lr'), // Минивебсервер для livereload
-    gulp = require('gulp'), // Сообственно Gulp JS
+//****************************************************************************************************
+//
+// .. VARIABLES
+//
+//****************************************************************************************************
+var gulp = require('gulp'), // Сообственно Gulp JS
     jade = require('gulp-jade'), // Плагин для Jade
     htmlhint = require('gulp-htmlhint'),
     prettify = require('gulp-html-prettify'),
+    htmlreplace = require('gulp-html-replace'),
     stylus = require('gulp-stylus'), // Плагин для Stylus
     autoprefixer = require('gulp-autoprefixer'), // Расстановка префиксов
-    livereload = require('gulp-livereload'), // Livereload для Gulp
     csso = require('gulp-csso'), // Минификация CSS
     imagemin = require('gulp-imagemin'), // Минификация изображений
     svgmin = require('gulp-svgmin'), // Минификация svg
     rename = require('gulp-rename'),
     clean = require('gulp-clean'),
+    ignore = require('gulp-ignore'),
     uglify = require('gulp-uglify'), // Минификация JS
     concat = require('gulp-concat'), // Склейка файлов
-    cache = require('gulp-cache'),
-    //zip = require('gulp-zip'); // Архив собранного проекта
-    connect = require('connect'), // Webserver
-    server = lr();
+    browserSync = require('browser-sync'); // livereload
+    zip = require('gulp-zip'); // Архив собранного проекта
+
+//****************************************************************************************************
+//
+// .. TASKS
+//
+//****************************************************************************************************
+
+var paths = {
+    layouts: {
+        src: ['./assets/template/*.jade', '!assets/template/_*.jade'],
+        dest: './build'
+    },
+    html: {
+        src: ['./assets/**/*.html'],
+        dest: './build'
+    },
+    stylesheets: {
+        src: './assets/styles/**/*.styl',
+        dest: './build/(-;/css'
+    },
+    copycss: {
+        src: './assets/styles/**/*.css',
+        dest: './build/(-;/css'
+    },
+    copyjs: {
+        src: './assets/js/libs/*',
+        dest: './build/(-;/js/libs'
+    },
+    javascripts: {
+        src: ['./assets/js/**/*.js', '!assets/js/libs/**/*.js'],
+        dest: './build/(-;/js'
+    },
+    images: {
+        src: ['./assets/img/**/*', '!assets/img/**/*.svg'],
+        dest: './build/(-;/img'
+    },
+    svg: {
+        src: './assets/img/**/*.svg',
+        dest: './build/(-;/img'
+    },
+    fonts: {
+        src: './assets/fonts/**/*',
+        dest: './build/(-;/fonts'
+    },
+    files: {
+        src: './assets/static/**/*',
+        dest: './build'
+    },
+    zip: {
+        src: './assets/*',
+        dest: './build'
+    }
+};
 
 
 // Собираем Stylus
 gulp.task('stylus', function() {
-    gulp.src('assets/styles/**/*.styl')
+    gulp.src(paths.stylesheets.src)
+        .pipe(stylus({set:['linenos']})) // собираем stylus
+    .on('error', console.log) // Если есть ошибки, выводим и продолжаем
+    .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
+    .pipe(gulp.dest(paths.stylesheets.dest)); // записываем css
+});
+
+gulp.task('stylus:build', function() {
+    gulp.src(paths.stylesheets.src)
         .pipe(stylus()) // собираем stylus
     .on('error', console.log) // Если есть ошибки, выводим и продолжаем
     .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
-    .pipe(gulp.dest('public/css/')) // записываем css
-    .pipe(livereload(server)); // даем команду на перезагрузку css
+    .pipe(gulp.dest(paths.stylesheets.dest))
+    .pipe(rename("style.min.css"))
+    .pipe(csso()) // минимизируем css
+    .pipe(gulp.dest(paths.stylesheets.dest)); // записываем css
 });
+
+// css
+//gulp.task('cssmin', function() {
+//    gulp.src('./assets/styles/mincss/*')
+//    .pipe(csso())
+//    .pipe(gulp.dest('./public/css/min'));
+//});
 
 // html
 gulp.task('html', function(){
-    gulp.src('assets/**/*.html')
+    gulp.src(paths.html.src)
         .pipe(htmlhint({
             "tag-pair": true,
             "style-disabled": true,
@@ -43,23 +115,20 @@ gulp.task('html', function(){
             "spec-char-escape": true
         }))
         .pipe(htmlhint.reporter())
-        //.pipe(gulp.dest('public/'))
         .pipe(prettify({
             indent_char: ' ',
             indent_size: 4
         }))
-        .pipe(gulp.dest('public/'))
-        .pipe(livereload(server));
+        .pipe(gulp.dest(paths.html.dest));
 });
 
 // Собираем html из Jade
 gulp.task('jade', function() {
-    gulp.src(['assets/template/*.jade', '!assets/template/_*.jade'])
+    gulp.src(paths.layouts.src)
         .pipe(jade({
             pretty: true
         }))  // Собираем Jade только в папке ./assets/template/ исключая файлы с _*
         .on('error', console.log) // Если есть ошибки, выводим и продолжаем
-    //.pipe(gulp.dest('public/')) // Записываем собранные файлы
     .pipe(htmlhint({
         "tag-pair": true,
         "style-disabled": true,
@@ -70,190 +139,163 @@ gulp.task('jade', function() {
         "spec-char-escape": true
     }))
     .pipe(htmlhint.reporter())
-    //.pipe(gulp.dest('public/'))
     .pipe(prettify({
         indent_char: ' ',
         indent_size: 4
     }))
-    .pipe(gulp.dest('public/'))
-    .pipe(livereload(server)); // даем команду на перезагрузку страницы
+    .pipe(gulp.dest(paths.layouts.dest));
 }); 
 
 
 // Собираем JS
 gulp.task('js', function() {
-    gulp.src(['assets/js/**/*.js', '!assets/js/libs/**/*.js'])
+    gulp.src(paths.javascripts.src)
         .pipe(concat('index.js')) // Собираем все JS, кроме тех которые находятся в ./assets/js/vendor/**
-        .pipe(gulp.dest('public/js'))
-        .pipe(livereload(server)); // даем команду на перезагрузку страницы
+        //.pipe(uglify()) // минификация
+        .pipe(gulp.dest(paths.javascripts.dest));
 });
 
+gulp.task('js:build', function() {
+    gulp.src(paths.javascripts.src)
+        .pipe(concat('index.js')) // Собираем все JS, кроме тех которые находятся в ./assets/js/vendor/**
+        //.pipe(uglify()) // минификация
+        .pipe(gulp.dest(paths.javascripts.dest));
+});
 
 // Копируем и минимизируем изображения
 gulp.task('images', function() {
-    gulp.src(['assets/img/**/*', '!assets/img/**/*.svg'])
-        .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-        .pipe(livereload(server))
-        .pipe(gulp.dest('public/img'))
+    gulp.src(paths.images.src)
+        .pipe(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true }))
+        .pipe(gulp.dest(paths.images.dest));
 });
-
 
 gulp.task('svgmin', function() {
-    gulp.src('assets/img/**/*.svg')
+    gulp.src(paths.svg.src)
         .pipe(svgmin())
-        .pipe(gulp.dest('public/img'));
+        .pipe(gulp.dest(paths.svg.dest));
 });
 
-
-/*gulp.task('zip', function () {
-    gulp.src('assets/*')
+gulp.task('zip', function () {
+    gulp.src(paths.zip.src)
         .pipe(zip('archive.zip'))
-        .pipe(gulp.dest('build'));
-});*/
+        .pipe(gulp.dest(paths.zip.dest));
+});
 
-
-// Clean
+//
+// .. Clean
+//
 gulp.task('clean', function() {
-    return gulp.src(['build/css', 'build/js', 'build/img'], {read: false})
-        .pipe(clean());
+  return gulp.src('./build', {read: false})
+    .pipe(clean());
 });
 
-
-// Локальный сервер для разработки
-gulp.task('http-server', function() {
-    connect()
-        .use(require('connect-livereload')())
-        .use(connect.static('public'))
-        .listen('9000');
-
-    console.log('Server listening on http://localhost:9000');
+// Browser-sync
+gulp.task('browser-sync', function(){
+    browserSync.init(['./build/*'], {
+        server: {
+            host: '127.0.0.1',
+            port: '9000',
+            baseDir: './build'
+        }
+    });
 });
 
+//
+// .. Copy
+//
+gulp.task('copy:css', function() {
+  gulp.src(paths.copycss.src)
+    .pipe(gulp.dest(paths.copycss.dest));
+});
 
-// Запуск сервера разработки gulp watch
-gulp.task('watch', function() {
+gulp.task('copy:js', function() {
+  gulp.src(paths.copyjs.src)
+    .pipe(gulp.dest(paths.copyjs.dest));
+});
+
+//gulp.task('copy:images', function() {
+//  gulp.src('./assets/img/**/*')
+//    .pipe(gulp.dest('./public/img/'));
+//});
+
+gulp.task('copy:fonts', function() {
+  gulp.src(paths.fonts.src)
+    .pipe(gulp.dest(paths.fonts.dest));
+});
+
+gulp.task('copy:files', function() {
+  gulp.src(paths.files.src)
+    .pipe(gulp.dest(paths.files.dest));
+});
+
+// Gulp watch with browser-sync
+gulp.task('watch', function(){
 
     // Копируем, что не должно компилиться
-    gulp.src('assets/styles/**/*.css').pipe(gulp.dest('public/css/'));
-    gulp.src('assets/js/libs/*').pipe(gulp.dest('public/js/libs/'));
-    // gulp.src('assets/**/*.html').pipe(gulp.dest('public/'));
-    gulp.src('assets/static/**/*').pipe(gulp.dest('public/'));
-
-    // Предварительная сборка проекта
-    gulp.run('stylus');
-    gulp.run('html');
-    gulp.run('jade');
-    gulp.run('images');
-    gulp.run('svgmin');
-    gulp.run('js');
-
-    // Подключаем Livereload
-    server.listen(35729, function(err) {
-        if (err) return console.log(err);
-
-        gulp.watch('assets/styles/**/*.styl', function() {
-            gulp.run('stylus');
-        });
-        gulp.watch('assets/**/*.html', function() {
-            gulp.run('html');
-        });
-        gulp.watch('assets/template/**/*.jade', function() {
-            gulp.run('jade');
-        });
-        gulp.watch('assets/img/**/*', function() {
-            gulp.run('images');
-        });
-        gulp.watch('assets/img/**/*.svg', function() {
-            gulp.run('svgmin');
-        });
-        gulp.watch('assets/js/**/*', function() {
-            gulp.run('js');
-        });
-    });
-    gulp.run('http-server');
+    //gulp.src('./assets/styles/**/*.css').pipe(gulp.dest('./public/css/'));
+    //gulp.src('./assets/js/libs/*').pipe(gulp.dest('./public/js/libs/'));
+    //gulp.src('./assets/static/**/*').pipe(gulp.dest('./public/'));
+    //gulp.src('./assets/img/**/*').pipe(gulp.dest('./public/img/'));
+ 
+    // At start
+    gulp.start('stylus');
+    gulp.start('html');
+    gulp.start('jade');
+    gulp.start('images');
+    //gulp.start('svgmin');
+    gulp.start('js');
+    gulp.start('copy:css');
+    gulp.start('copy:js');
+    //gulp.start('copy:images');
+    gulp.start('copy:fonts');
+    gulp.start('copy:files');
+    gulp.start('browser-sync');
+ 
+    gulp.watch(paths.stylesheets.src, ['stylus']);
+    gulp.watch(paths.html.src, ['html']);
+    gulp.watch(paths.layouts.src, ['jade']);
+    gulp.watch(paths.javascripts.src, ['js']);
+    gulp.watch(paths.copycss.src, ['copy:css']);
+    gulp.watch(paths.copyjs.src, ['copy:js']);
+    gulp.watch(paths.images.src, ['images']);
+    gulp.watch(paths.fonts.src, ['copy:fonts']);
+    gulp.watch(paths.files.src, ['copy:files']);
+    //gulp.watch('./assets/img/**/*.svg', ['svgmin']);
 });
 
+
+//****************************************************************************************************
+//
+// .. RUN
+//
+//****************************************************************************************************
+gulp.task('default', ['connect', 'watch']);
+
+gulp.task('dev', ['clean'], function() {
+    gulp.start(
+        'stylus',
+        'html',
+        'jade',
+        'js',
+        'copy:css',
+        'copy:js',
+        'copy:images',
+        'copy:fonts',
+        'copy:files'
+    );
+});
 
 gulp.task('build', ['clean'], function() {
-
-    // Копируем, что не должно компилиться
-    gulp.src('assets/styles/**/*.css').pipe(gulp.dest('build/css/'));
-    gulp.src('assets/js/libs/*').pipe(gulp.dest('build/js/libs/'));
-    // gulp.src('assets/**/*.html').pipe(gulp.dest('build/'));
-    gulp.src('assets/static/**/*').pipe(gulp.dest('build/'));
-
-    // css
-    gulp.src('assets/styles/**/*.styl')
-        .pipe(stylus()) // собираем stylus
-        .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
-        .pipe(gulp.dest('build/css/')) // записываем css
-        //.pipe(concat('allstyles.css'))
-        .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
-        .pipe(gulp.dest('build/css/'))
-        .pipe(rename("allstyles.min.css"))
-        .pipe(csso()) // минимизируем css
-        .pipe(gulp.dest('build/css/')) // записываем css
-
-    // html
-    gulp.task('html', function(){
-        gulp.src('assets/**/*.html')
-            .pipe(htmlhint({
-                "tag-pair": true,
-                "style-disabled": true,
-                "img-alt-require": true,
-                "tagname-lowercase": true,
-                "src-not-empty": true,
-                "id-unique": true,
-                "spec-char-escape": true
-            }))
-            .pipe(htmlhint.reporter())
-            //.pipe(gulp.dest('build/'))
-            .pipe(prettify({
-                indent_char: ' ',
-                indent_size: 4
-            }))
-            .pipe(gulp.dest('build/'))
-            .pipe(livereload(server));
-    });
-
-    // jade
-    gulp.src(['assets/template/*.jade', '!assets/template/_*.jade'])
-        .pipe(jade({
-            pretty: true
-        }))
-    //.pipe(gulp.dest('build/')) // Записываем собранные файлы
-    .pipe(htmlhint({
-        "tag-pair": true,
-        "style-disabled": true,
-        "img-alt-require": true,
-        "tagname-lowercase": true,
-        "src-not-empty": true,
-        "id-unique": true,
-        "spec-char-escape": true
-    }))
-    .pipe(htmlhint.reporter())
-    //.pipe(gulp.dest('build/'))
-    .pipe(prettify({
-        indent_char: ' ',
-        indent_size: 4
-    }))
-    .pipe(gulp.dest('build/'))
-    .pipe(livereload(server)); // даем команду на перезагрузку страницы
-
-    // js
-    gulp.src(['assets/js/**/*.js', '!assets/js/libs/**/*.js'])
-        .pipe(gulp.dest('build/js'))
-        .pipe(concat('allscripts.min.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('build/js'));
-
-    // image
-    gulp.src(['assets/img/**/*', '!assets/img/**/*.svg'])
-        .pipe(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true }))
-        .pipe(gulp.dest('build/img'));
-
-    gulp.src('assets/img/**/*.svg')
-        .pipe(svgmin())
-        .pipe(gulp.dest('build/img'));
-
+    gulp.start(
+        'stylus:build',
+        'html',
+        'jade',
+        'js:build',
+        'images',
+        'svgmin',
+        'copy:css',
+        'copy:js',
+        'copy:fonts',
+        'copy:files'
+    );
 });
