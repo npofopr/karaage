@@ -11,15 +11,20 @@ var gulp = require('gulp'), // Сообственно Gulp JS
     stylus = require('gulp-stylus'), // Плагин для Stylus
     autoprefixer = require('gulp-autoprefixer'), // Расстановка префиксов
     csso = require('gulp-csso'), // Минификация CSS
+    csscomb = require('gulp-csscomb'),
+    newer = require('gulp-newer'),
     imagemin = require('gulp-imagemin'), // Минификация изображений
-    svgmin = require('gulp-svgmin'), // Минификация svg
+    svgo = require('imagemin-svgo'),
+    optipng = require('imagemin-optipng'),
     rename = require('gulp-rename'),
     clean = require('gulp-clean'),
     ignore = require('gulp-ignore'),
     uglify = require('gulp-uglify'), // Минификация JS
     concat = require('gulp-concat'), // Склейка файлов
-    browserSync = require('browser-sync'); // livereload
-    zip = require('gulp-zip'); // Архив собранного проекта
+    browserSync = require('browser-sync'), // livereload
+    zip = require('gulp-zip'), // Архив собранного проекта
+    plumber = require('gulp-plumber'),
+    path = require('path');
 
 //****************************************************************************************************
 //
@@ -30,41 +35,73 @@ var gulp = require('gulp'), // Сообственно Gulp JS
 var paths = {
     layouts: {
         src: ['./assets/template/*.jade', '!assets/template/_*.jade'],
+        dest: './public'
+    },
+    layouts_build: {
+        src: ['./assets/template/*.jade', '!assets/template/_*.jade'],
         dest: './build'
     },
     html: {
+        src: ['./assets/**/*.html'],
+        dest: './public'
+    },
+    html_build: {
         src: ['./assets/**/*.html'],
         dest: './build'
     },
     stylesheets: {
         src: './assets/styles/**/*.styl',
-        dest: './build/(-;/css'
+        dest: './public/css'
     },
-    copycss: {
-        src: './assets/styles/**/*.css',
-        dest: './build/(-;/css'
-    },
-    copyjs: {
-        src: './assets/js/libs/*',
-        dest: './build/(-;/js/libs'
+    stylesheets_build: {
+        src: './assets/styles/**/*.styl',
+        dest: './build/css'
     },
     javascripts: {
         src: ['./assets/js/**/*.js', '!assets/js/libs/**/*.js'],
-        dest: './build/(-;/js'
+        dest: './public/js'
+    },
+    javascripts_build: {
+        src: ['./assets/js/**/*.js', '!assets/js/libs/**/*.js'],
+        dest: './build/js'
     },
     images: {
-        src: ['./assets/img/**/*', '!assets/img/**/*.svg'],
-        dest: './build/(-;/img'
+        src: './assets/img/**/*',
+        dest: './build/img'
     },
-    svg: {
-        src: './assets/img/**/*.svg',
-        dest: './build/(-;/img'
+    copycss: {
+        src: './assets/styles/**/*.css',
+        dest: './public/css'
+    },
+    copycss_build: {
+        src: './assets/styles/**/*.css',
+        dest: './build/css'
+    },
+    copyjs: {
+        src: './assets/js/**/*',
+        dest: './public/js'
+    },
+    copyjs_build: {
+        src: './assets/js/libs/*',
+        dest: './build/js/libs'
+    },
+    copyimg: {
+        src: './assets/img/**/*',
+        dest: './public/img'
     },
     fonts: {
         src: './assets/fonts/**/*',
-        dest: './build/(-;/fonts'
+        dest: './public/fonts'
+    },
+    fonts_build: {
+        src: './assets/fonts/**/*',
+        dest: './build/fonts'
     },
     files: {
+        src: './assets/static/**/*',
+        dest: './public'
+    },
+    files_build: {
         src: './assets/static/**/*',
         dest: './build'
     },
@@ -78,17 +115,53 @@ var paths = {
 // Собираем Stylus
 gulp.task('stylus', function() {
     gulp.src(paths.stylesheets.src)
-        .pipe(stylus({set:['linenos']})) // собираем stylus
-    .on('error', console.log) // Если есть ошибки, выводим и продолжаем
+    .pipe(plumber()) // Если есть ошибки, выводим и продолжаем
+    .pipe(stylus({set:['linenos']})) // собираем stylus
     .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
+    .pipe(csscomb({
+		"always-semicolon": true,
+		"block-indent": "    ",
+		"colon-space": ["", " "],
+		"color-case": "lower",
+		"color-shorthand": true,
+		"combinator-space": [" ", " "],
+		"element-case": "lower",
+		"eof-newline": true,
+		"leading-zero": false,
+		"quotes": "single",
+		"remove-empty-rulesets": true,
+		"rule-indent": "    ",
+		"stick-brace": " ",
+		"strip-spaces": true,
+		"unitless-zero": true,
+		"vendor-prefix-align": true
+    }))
     .pipe(gulp.dest(paths.stylesheets.dest)); // записываем css
 });
 
 gulp.task('stylus:build', function() {
     gulp.src(paths.stylesheets.src)
-        .pipe(stylus()) // собираем stylus
-    .on('error', console.log) // Если есть ошибки, выводим и продолжаем
+    .pipe(plumber()) // Если есть ошибки, выводим и продолжаем
+    .pipe(stylus({set:['linenos']})) // собираем stylus
     .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
+    .pipe(csscomb({
+		"always-semicolon": true,
+		"block-indent": "    ",
+		"colon-space": ["", " "],
+		"color-case": "lower",
+		"color-shorthand": true,
+		"combinator-space": [" ", " "],
+		"element-case": "lower",
+		"eof-newline": true,
+		"leading-zero": false,
+		"quotes": "single",
+		"remove-empty-rulesets": true,
+		"rule-indent": "    ",
+		"stick-brace": " ",
+		"strip-spaces": true,
+		"unitless-zero": true,
+		"vendor-prefix-align": true
+    }))
     .pipe(gulp.dest(paths.stylesheets.dest))
     .pipe(rename("style.min.css"))
     .pipe(csso()) // минимизируем css
@@ -105,6 +178,7 @@ gulp.task('stylus:build', function() {
 // html
 gulp.task('html', function(){
     gulp.src(paths.html.src)
+    	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
         .pipe(htmlhint({
             "tag-pair": true,
             "style-disabled": true,
@@ -122,13 +196,33 @@ gulp.task('html', function(){
         .pipe(gulp.dest(paths.html.dest));
 });
 
+gulp.task('html:build', function(){
+    gulp.src(paths.html_build.src)
+        .pipe(plumber()) // Если есть ошибки, выводим и продолжаем
+        .pipe(htmlhint({
+            "tag-pair": true,
+            "style-disabled": true,
+            "img-alt-require": true,
+            "tagname-lowercase": true,
+            "src-not-empty": true,
+            "id-unique": true,
+            "spec-char-escape": true
+        }))
+        .pipe(htmlhint.reporter())
+        .pipe(prettify({
+            indent_char: ' ',
+            indent_size: 4
+        }))
+        .pipe(gulp.dest(paths.html_build.dest));
+});
+
 // Собираем html из Jade
 gulp.task('jade', function() {
-    gulp.src(paths.layouts.src)
+    gulp.src(['./assets/template/*.jade', '!assets/template/_*.jade'])
+    	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
         .pipe(jade({
             pretty: true
         }))  // Собираем Jade только в папке ./assets/template/ исключая файлы с _*
-        .on('error', console.log) // Если есть ошибки, выводим и продолжаем
     .pipe(htmlhint({
         "tag-pair": true,
         "style-disabled": true,
@@ -143,42 +237,65 @@ gulp.task('jade', function() {
         indent_char: ' ',
         indent_size: 4
     }))
-    .pipe(gulp.dest(paths.layouts.dest));
+    .pipe(gulp.dest('./public/'));
 }); 
 
+gulp.task('jade:build', function() {
+    gulp.src(['./assets/template/*.jade', '!assets/template/_*.jade'])
+    	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
+        .pipe(jade({
+            pretty: true
+        }))  // Собираем Jade только в папке ./assets/template/ исключая файлы с _*
+    .pipe(htmlhint({
+        "tag-pair": true,
+        "style-disabled": true,
+        "img-alt-require": true,
+        "tagname-lowercase": true,
+        "src-not-empty": true,
+        "id-unique": true,
+        "spec-char-escape": true
+    }))
+    .pipe(htmlhint.reporter())
+    .pipe(prettify({
+        indent_char: ' ',
+        indent_size: 4
+    }))
+    .pipe(gulp.dest('./build/'));
+}); 
 
 // Собираем JS
 gulp.task('js', function() {
-    gulp.src(paths.javascripts.src)
+    gulp.src(['./assets/js/**/*.js', '!assets/js/libs/**/*.js'])
+    	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
         .pipe(concat('index.js')) // Собираем все JS, кроме тех которые находятся в ./assets/js/vendor/**
         //.pipe(uglify()) // минификация
-        .pipe(gulp.dest(paths.javascripts.dest));
+        .pipe(gulp.dest('./public/js'));
 });
 
 gulp.task('js:build', function() {
-    gulp.src(paths.javascripts.src)
+    gulp.src(['./assets/js/*.js', '!assets/js/libs/**/*.js'])
+    	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
         .pipe(concat('index.js')) // Собираем все JS, кроме тех которые находятся в ./assets/js/vendor/**
         //.pipe(uglify()) // минификация
-        .pipe(gulp.dest(paths.javascripts.dest));
+        .pipe(gulp.dest('./build/js'));
 });
 
 // Копируем и минимизируем изображения
 gulp.task('images', function() {
     gulp.src(paths.images.src)
-        .pipe(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true }))
+    	.pipe(newer(paths.images.dest))
+        .pipe(imagemin({
+            progressive: true,
+            svgoPlugins: [{removeViewBox: false}],
+            use: [optipng({ optimizationLevel: 3 })]
+        }))
         .pipe(gulp.dest(paths.images.dest));
 });
 
-gulp.task('svgmin', function() {
-    gulp.src(paths.svg.src)
-        .pipe(svgmin())
-        .pipe(gulp.dest(paths.svg.dest));
-});
-
 gulp.task('zip', function () {
-    gulp.src(paths.zip.src)
+    gulp.src('./assets/*')
         .pipe(zip('archive.zip'))
-        .pipe(gulp.dest(paths.zip.dest));
+        .pipe(gulp.dest('build'));
 });
 
 //
@@ -191,41 +308,57 @@ gulp.task('clean', function() {
 
 // Browser-sync
 gulp.task('browser-sync', function(){
-    browserSync.init(['./build/*'], {
+    browserSync.init(['./public/**/*'], {
         server: {
             host: '127.0.0.1',
             port: '9000',
-            baseDir: './build'
+            baseDir: './public'
         }
     });
 });
 
 //
-// .. Copy
+// .. Copy // Копируем, что не должно компилиться
 //
 gulp.task('copy:css', function() {
   gulp.src(paths.copycss.src)
     .pipe(gulp.dest(paths.copycss.dest));
+});
+gulp.task('copydev:css', function() {
+  gulp.src(paths.copycss_build.src)
+    .pipe(gulp.dest(paths.copycss_build.dest));
 });
 
 gulp.task('copy:js', function() {
   gulp.src(paths.copyjs.src)
     .pipe(gulp.dest(paths.copyjs.dest));
 });
+gulp.task('copydev:js', function() {
+  gulp.src(paths.copyjs_build.src)
+    .pipe(gulp.dest(paths.copyjs_build.dest));
+});
 
-//gulp.task('copy:images', function() {
-//  gulp.src('./assets/img/**/*')
-//    .pipe(gulp.dest('./public/img/'));
-//});
+gulp.task('copy:images', function() {
+  gulp.src(paths.copyimg.src)
+    .pipe(gulp.dest(paths.copyimg.dest));
+});
 
 gulp.task('copy:fonts', function() {
   gulp.src(paths.fonts.src)
     .pipe(gulp.dest(paths.fonts.dest));
 });
+gulp.task('copydev:fonts', function() {
+  gulp.src(paths.fonts_build.src)
+    .pipe(gulp.dest(paths.fonts_build.dest));
+});
 
 gulp.task('copy:files', function() {
   gulp.src(paths.files.src)
     .pipe(gulp.dest(paths.files.dest));
+});
+gulp.task('copydev:files', function() {
+  gulp.src(paths.files_build.src)
+    .pipe(gulp.dest(paths.files_build.dest));
 });
 
 // Gulp watch with browser-sync
@@ -241,12 +374,11 @@ gulp.task('watch', function(){
     gulp.start('stylus');
     gulp.start('html');
     gulp.start('jade');
-    gulp.start('images');
-    //gulp.start('svgmin');
+    //gulp.start('images');
     gulp.start('js');
     gulp.start('copy:css');
     gulp.start('copy:js');
-    //gulp.start('copy:images');
+    gulp.start('copy:images');
     gulp.start('copy:fonts');
     gulp.start('copy:files');
     gulp.start('browser-sync');
@@ -254,13 +386,12 @@ gulp.task('watch', function(){
     gulp.watch(paths.stylesheets.src, ['stylus']);
     gulp.watch(paths.html.src, ['html']);
     gulp.watch(paths.layouts.src, ['jade']);
-    gulp.watch(paths.javascripts.src, ['js']);
+    //gulp.watch(paths.javascripts.src, ['js']);
     gulp.watch(paths.copycss.src, ['copy:css']);
     gulp.watch(paths.copyjs.src, ['copy:js']);
-    gulp.watch(paths.images.src, ['images']);
+    gulp.watch(paths.copyimg.src, ['images']);
     gulp.watch(paths.fonts.src, ['copy:fonts']);
     gulp.watch(paths.files.src, ['copy:files']);
-    //gulp.watch('./assets/img/**/*.svg', ['svgmin']);
 });
 
 
@@ -272,31 +403,29 @@ gulp.task('watch', function(){
 gulp.task('default', ['connect', 'watch']);
 
 gulp.task('dev', ['clean'], function() {
-    gulp.start(
-        'stylus',
-        'html',
-        'jade',
-        'js',
-        'copy:css',
-        'copy:js',
-        'images',
-        'svgmin',
-        'copy:fonts',
-        'copy:files'
-    );
+  gulp.start(
+    'stylus',
+    'html',
+    'jade',
+    //'js',
+    'copy:css',
+    'copy:js',
+    'copy:images',
+    'copy:fonts',
+    'copy:files'
+  );
 });
 
 gulp.task('build', ['clean'], function() {
-    gulp.start(
-        'stylus:build',
-        'html',
-        'jade',
-        'js:build',
-        'images',
-        'svgmin',
-        'copy:css',
-        'copy:js',
-        'copy:fonts',
-        'copy:files'
-    );
+  gulp.start(
+    'stylus:build',
+    'html:build',
+    'jade:build',
+    'js:build',
+    'images',
+    'copydev:css',
+    'copydev:js',
+    'copydev:fonts',
+    'copydev:files'
+  );
 });
