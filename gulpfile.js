@@ -11,7 +11,7 @@ var gulp = require('gulp'), // Сообственно Gulp JS
     stylus = require('gulp-stylus'), // Плагин для Stylus
     autoprefixer = require('gulp-autoprefixer'), // Расстановка префиксов
     csso = require('gulp-csso'), // Минификация CSS
-    csscomb = require('gulp-csscomb'),
+    // csscomb = require('gulp-csscomb'),
     newer = require('gulp-newer'),
     imagemin = require('gulp-imagemin'), // Минификация изображений
     svgo = require('imagemin-svgo'),
@@ -34,80 +34,80 @@ var gulp = require('gulp'), // Сообственно Gulp JS
 
 var paths = {
     layouts: {
-        src: ['./assets/template/*.jade', '!assets/template/_*.jade'],
-        dest: './public'
+        src: ['assets/template/*.jade', '!assets/template/_*.jade'],
+        dest: 'public'
     },
     layouts_build: {
-        src: ['./assets/template/*.jade', '!assets/template/_*.jade'],
-        dest: './build'
+        src: ['assets/template/*.jade', '!assets/template/_*.jade'],
+        dest: 'build'
     },
     html: {
-        src: ['./assets/**/*.html'],
-        dest: './public'
+        src: ['assets/**/*.html'],
+        dest: 'public'
     },
     html_build: {
-        src: ['./assets/**/*.html'],
-        dest: './build'
+        src: ['assets/**/*.html'],
+        dest: 'build'
     },
     stylesheets: {
-        src: './assets/styles/**/*.styl',
-        dest: './public/css'
+        src: 'assets/styles/**/*.styl',
+        dest: 'public/css'
     },
     stylesheets_build: {
-        src: './assets/styles/**/*.styl',
-        dest: './build/css'
+        src: 'assets/styles/**/*.styl',
+        dest: 'build/css'
     },
     javascripts: {
-        src: ['./assets/js/**/*.js', '!assets/js/libs/**/*.js'],
-        dest: './public/js'
+        src: ['assets/js/**/*.js', '!assets/js/libs/**/*.js'],
+        dest: 'public/js'
     },
     javascripts_build: {
-        src: ['./assets/js/**/*.js', '!assets/js/libs/**/*.js'],
-        dest: './build/js'
+        src: ['assets/js/**/*.js', '!assets/js/libs/**/*.js'],
+        dest: 'build/js'
     },
     images: {
-        src: './assets/img/**/*',
-        dest: './build/img'
+        src: 'assets/img/**/*',
+        dest: 'build/img'
     },
     copycss: {
-        src: './assets/styles/**/*.css',
-        dest: './public/css'
+        src: 'assets/styles/**/*.css',
+        dest: 'public/css'
     },
     copycss_build: {
-        src: './assets/styles/**/*.css',
-        dest: './build/css'
+        src: 'assets/styles/**/*.css',
+        dest: 'build/css'
     },
     copyjs: {
-        src: './assets/js/**/*',
-        dest: './public/js'
+        src: 'assets/js/**/*',
+        dest: 'public/js'
     },
     copyjs_build: {
-        src: './assets/js/libs/*',
-        dest: './build/js/libs'
+        src: 'assets/js/libs/*',
+        dest: 'build/js/libs'
     },
     copyimg: {
-        src: './assets/img/**/*',
-        dest: './public/img'
+        src: 'assets/img/**/*',
+        dest: 'public/img'
     },
     fonts: {
-        src: './assets/fonts/**/*',
-        dest: './public/fonts'
+        src: 'assets/fonts/**/*',
+        dest: 'public/fonts'
     },
     fonts_build: {
-        src: './assets/fonts/**/*',
-        dest: './build/fonts'
+        src: 'assets/fonts/**/*',
+        dest: 'build/fonts'
     },
     files: {
-        src: './assets/static/**/*',
-        dest: './public'
+        src: 'assets/static/**/*',
+        dest: 'public'
     },
     files_build: {
-        src: './assets/static/**/*',
-        dest: './build'
+        src: 'assets/static/**/*',
+        dest: 'build'
     },
     zip: {
-        src: './assets/*',
-        dest: './build'
+        src: 'assets/*',
+        dest: 'build'
     }
 };
 
@@ -118,24 +118,6 @@ gulp.task('stylus', function() {
     .pipe(plumber()) // Если есть ошибки, выводим и продолжаем
     .pipe(stylus({set:['linenos']})) // собираем stylus
     .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
-    .pipe(csscomb({
-		"always-semicolon": true,
-		"block-indent": "    ",
-		"colon-space": ["", " "],
-		"color-case": "lower",
-		"color-shorthand": true,
-		"combinator-space": [" ", " "],
-		"element-case": "lower",
-		"eof-newline": true,
-		"leading-zero": false,
-		"quotes": "single",
-		"remove-empty-rulesets": true,
-		"rule-indent": "    ",
-		"stick-brace": " ",
-		"strip-spaces": true,
-		"unitless-zero": true,
-		"vendor-prefix-align": true
-    }))
     .pipe(gulp.dest(paths.stylesheets.dest)); // записываем css
 });
 
@@ -144,24 +126,6 @@ gulp.task('stylus:build', function() {
     .pipe(plumber()) // Если есть ошибки, выводим и продолжаем
     .pipe(stylus({set:['linenos']})) // собираем stylus
     .pipe(autoprefixer("last 1 version", "> 1%", "ie 8", "ie 7"))
-    .pipe(csscomb({
-		"always-semicolon": true,
-		"block-indent": "    ",
-		"colon-space": ["", " "],
-		"color-case": "lower",
-		"color-shorthand": true,
-		"combinator-space": [" ", " "],
-		"element-case": "lower",
-		"eof-newline": true,
-		"leading-zero": false,
-		"quotes": "single",
-		"remove-empty-rulesets": true,
-		"rule-indent": "    ",
-		"stick-brace": " ",
-		"strip-spaces": true,
-		"unitless-zero": true,
-		"vendor-prefix-align": true
-    }))
     .pipe(gulp.dest(paths.stylesheets.dest))
     .pipe(rename("style.min.css"))
     .pipe(csso()) // минимизируем css
@@ -170,9 +134,9 @@ gulp.task('stylus:build', function() {
 
 // css
 //gulp.task('cssmin', function() {
-//    gulp.src('./assets/styles/mincss/*')
+//    gulp.src('assets/styles/mincss/*')
 //    .pipe(csso())
-//    .pipe(gulp.dest('./public/css/min'));
+//    .pipe(gulp.dest('public/css/min'));
 //});
 
 // html
@@ -218,7 +182,7 @@ gulp.task('html:build', function(){
 
 // Собираем html из Jade
 gulp.task('jade', function() {
-    gulp.src(['./assets/template/*.jade', '!assets/template/_*.jade'])
+    gulp.src(paths.layouts.src)
     	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
         .pipe(jade({
             pretty: true
@@ -237,11 +201,11 @@ gulp.task('jade', function() {
         indent_char: ' ',
         indent_size: 4
     }))
-    .pipe(gulp.dest('./public/'));
+    .pipe(gulp.dest(paths.layouts.dest));
 }); 
 
 gulp.task('jade:build', function() {
-    gulp.src(['./assets/template/*.jade', '!assets/template/_*.jade'])
+    gulp.src(paths.layouts_build.src)
     	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
         .pipe(jade({
             pretty: true
@@ -260,24 +224,24 @@ gulp.task('jade:build', function() {
         indent_char: ' ',
         indent_size: 4
     }))
-    .pipe(gulp.dest('./build/'));
+    .pipe(gulp.dest(paths.layouts_build.dest));
 }); 
 
 // Собираем JS
 gulp.task('js', function() {
-    gulp.src(['./assets/js/**/*.js', '!assets/js/libs/**/*.js'])
+    gulp.src(paths.javascripts.src)
     	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
         .pipe(concat('index.js')) // Собираем все JS, кроме тех которые находятся в ./assets/js/vendor/**
         //.pipe(uglify()) // минификация
-        .pipe(gulp.dest('./public/js'));
+        .pipe(gulp.dest(paths.javascripts.dest));
 });
 
 gulp.task('js:build', function() {
-    gulp.src(['./assets/js/*.js', '!assets/js/libs/**/*.js'])
+    gulp.src(paths.javascripts_build.src)
     	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
         .pipe(concat('index.js')) // Собираем все JS, кроме тех которые находятся в ./assets/js/vendor/**
         //.pipe(uglify()) // минификация
-        .pipe(gulp.dest('./build/js'));
+        .pipe(gulp.dest(paths.javascripts_build.src));
 });
 
 // Копируем и минимизируем изображения
@@ -293,7 +257,7 @@ gulp.task('images', function() {
 });
 
 gulp.task('zip', function () {
-    gulp.src('./assets/*')
+    gulp.src('assets/*')
         .pipe(zip('archive.zip'))
         .pipe(gulp.dest('build'));
 });
@@ -302,17 +266,17 @@ gulp.task('zip', function () {
 // .. Clean
 //
 gulp.task('clean', function() {
-  return gulp.src('./build', {read: false})
+  return gulp.src('build', {read: false})
     .pipe(clean());
 });
 
 // Browser-sync
 gulp.task('browser-sync', function(){
-    browserSync.init(['./public/**/*'], {
+    browserSync.init(['public/**/*'], {
         server: {
             host: '127.0.0.1',
             port: '9000',
-            baseDir: './public'
+            baseDir: 'public'
         }
     });
 });
@@ -365,10 +329,10 @@ gulp.task('copydev:files', function() {
 gulp.task('watch', function(){
 
     // Копируем, что не должно компилиться
-    //gulp.src('./assets/styles/**/*.css').pipe(gulp.dest('./public/css/'));
-    //gulp.src('./assets/js/libs/*').pipe(gulp.dest('./public/js/libs/'));
-    //gulp.src('./assets/static/**/*').pipe(gulp.dest('./public/'));
-    //gulp.src('./assets/img/**/*').pipe(gulp.dest('./public/img/'));
+    //gulp.src('assets/styles/**/*.css').pipe(gulp.dest('public/css/'));
+    //gulp.src('assets/js/libs/*').pipe(gulp.dest('public/js/libs/'));
+    //gulp.src('assets/static/**/*').pipe(gulp.dest('public/'));
+    //gulp.src('assets/img/**/*').pipe(gulp.dest('public/img/'));
  
     // At start
     gulp.start('stylus');
@@ -400,7 +364,7 @@ gulp.task('watch', function(){
 // .. RUN
 //
 //****************************************************************************************************
-gulp.task('default', ['connect', 'watch']);
+gulp.task('default', ['browser-sync', 'watch']);
 
 gulp.task('dev', ['clean'], function() {
   gulp.start(
