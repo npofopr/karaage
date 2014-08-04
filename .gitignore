@@ -4,6 +4,8 @@ node_modules/*
 _out/*
 out
 public_html/*
+public
+public/*
 temp/
 design/*
 node_modules
