@@ -12,7 +12,7 @@ var gulp = require('gulp'), // Сообственно Gulp JS
     autoprefixer = require('gulp-autoprefixer'), // Расстановка префиксов
     csso = require('gulp-csso'), // Минификация CSS
     // csscomb = require('gulp-csscomb'),
-    newer = require('gulp-newer'),
+    changed = require('gulp-changed'),
     imagemin = require('gulp-imagemin'), // Минификация изображений
     svgo = require('imagemin-svgo'),
     optipng = require('imagemin-optipng'),
@@ -49,11 +49,11 @@ var banner = [
 
 var paths = {
     layouts: {
-        src: ['assets/template/*.jade', '!assets/template/_*.jade'],
+        src: ['assets/template/*.jade', '!assets/template/_*.jade'],  // Собираем Jade только в папке ./assets/template/ исключая файлы с _*
         dest: 'public'
     },
     layouts_build: {
-        src: ['assets/template/*.jade', '!assets/template/_*.jade'],
+        src: ['assets/template/*.jade', '!assets/template/_*.jade'],  // Собираем Jade только в папке ./assets/template/ исключая файлы с _*
         dest: 'build'
     },
     html: {
@@ -214,48 +214,50 @@ gulp.task('html:build', function(){
 // Собираем html из Jade
 gulp.task('jade', function() {
     gulp.src(paths.layouts.src)
+    	.pipe(changed('app', {extension: '.html'}))
     	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
         .pipe(jade({
             pretty: true
-        }))  // Собираем Jade только в папке ./assets/template/ исключая файлы с _*
-    .pipe(htmlhint({
-        "tag-pair": true,
-        "style-disabled": true,
-        "img-alt-require": true,
-        "tagname-lowercase": true,
-        "src-not-empty": true,
-        "id-unique": true,
-        "spec-char-escape": true
-    }))
-    .pipe(htmlhint.reporter())
-    .pipe(prettify({
-        indent_char: ' ',
-        indent_size: 4
-    }))
-    .pipe(gulp.dest(paths.layouts.dest))
-    .pipe(browserSync.reload({stream:true}));
+        }))
+	    .pipe(htmlhint({
+	        "tag-pair": true,
+	        "style-disabled": true,
+	        "img-alt-require": true,
+	        "tagname-lowercase": true,
+	        "src-not-empty": true,
+	        "id-unique": true,
+	        "spec-char-escape": true
+	    }))
+	    .pipe(htmlhint.reporter())
+	    .pipe(prettify({
+	        indent_char: ' ',
+	        indent_size: 4
+	    }))
+	.pipe(gulp.dest(paths.layouts.dest))
+    	.pipe(browserSync.reload({stream:true}));
 }); 
 
 gulp.task('jade:build', function() {
     gulp.src(paths.layouts_build.src)
+    	.pipe(changed('app', {extension: '.html'}))
     	.pipe(plumber()) // Если есть ошибки, выводим и продолжаем
         .pipe(jade({
             pretty: true
-        }))  // Собираем Jade только в папке ./assets/template/ исключая файлы с _*
-    .pipe(htmlhint({
-        "tag-pair": true,
-        "style-disabled": true,
-        "img-alt-require": true,
-        "tagname-lowercase": true,
-        "src-not-empty": true,
-        "id-unique": true,
-        "spec-char-escape": true
-    }))
-    .pipe(htmlhint.reporter())
-    .pipe(prettify({
-        indent_char: ' ',
-        indent_size: 4
-    }))
+        }))
+	    .pipe(htmlhint({
+	        "tag-pair": true,
+	        "style-disabled": true,
+	        "img-alt-require": true,
+	        "tagname-lowercase": true,
+	        "src-not-empty": true,
+	        "id-unique": true,
+	        "spec-char-escape": true
+	    }))
+	    .pipe(htmlhint.reporter())
+	    .pipe(prettify({
+	        indent_char: ' ',
+	        indent_size: 4
+	    }))
     .pipe(gulp.dest(paths.layouts_build.dest));
 }); 
 
@@ -282,7 +284,7 @@ gulp.task('js:build', function() {
 // Копируем и минимизируем изображения
 gulp.task('images', function() {
     gulp.src(paths.images.src)
-    	.pipe(newer(paths.images.dest))
+    	.pipe(changed(paths.images.dest))
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
@@ -292,7 +294,7 @@ gulp.task('images', function() {
 });
 gulp.task('images:build', function() {
     gulp.src(paths.images_build.src)
-    	.pipe(newer(paths.images_build.dest))
+    	.pipe(paths.images_build.dest)
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
@@ -435,7 +437,9 @@ gulp.task('dev', ['clean'], function() {
     //'js',
     'copy:css',
     'copy:js',
-    'copy:images',
+    //'copy:images',
+    'images',
+    'webp',
     'copy:fonts',
     'copy:files'
   );
