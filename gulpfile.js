@@ -294,7 +294,7 @@ gulp.task('images', function() {
 });
 gulp.task('images:build', function() {
     gulp.src(paths.images_build.src)
-    	.pipe(paths.images_build.dest)
+    	.pipe(changed(paths.images_build.dest))
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
@@ -451,8 +451,8 @@ gulp.task('build', ['clean'], function() {
     'html:build',
     'jade:build',
     'js:build',
-    'images:build',
     'webp:build',
+    'images:build',
     'copydev:css',
     'copydev:js',
     'copydev:fonts',
