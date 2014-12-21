@@ -10,7 +10,11 @@ var gulp = require('gulp'), // Сообственно Gulp JS
     htmlreplace = require('gulp-html-replace'),
     stylus = require('gulp-stylus'),
     filter = require('gulp-filter'),
-    autoprefixer = require('gulp-autoprefixer'), // Расстановка префиксов
+    //autoprefixer = require('gulp-autoprefixer'), // Расстановка префиксов
+    autoprefixer = require('autoprefixer-core'),
+	mqpacker = require('css-mqpacker'),
+	csswring = require('csswring'),
+    postcss = require('gulp-postcss'),
     csso = require('gulp-csso'), // Минификация CSS
     sourcemaps = require('gulp-sourcemaps'),
     changed = require('gulp-changed'),
@@ -147,7 +151,12 @@ var paths = {
 
 // Собираем Stylus
 gulp.task('stylus', function() {
-	gulp.src(paths.stylesheets.src)
+	var processors = [
+		autoprefixer({browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7']}),
+		mqpacker
+		//csswring({preserveHacks: true})
+	];
+	return gulp.src(paths.stylesheets.src)
 		.pipe(plumber())
 		.pipe(stylus({
 			sourcemap: {
@@ -159,7 +168,7 @@ gulp.task('stylus', function() {
 		.pipe(sourcemaps.init({
 			loadMaps: true
 		}))
-		.pipe(autoprefixer("last 4 version", "> 1%", "ie 8", "ie 7"))
+		.pipe(postcss(processors))
 		.pipe(header(banner, { package : package }))
 		.pipe(sourcemaps.write('.', {
 			includeConent: false,
@@ -170,10 +179,15 @@ gulp.task('stylus', function() {
 });
 
 gulp.task('stylus:build', function() {
-    gulp.src(paths.stylesheets_build.src)
+    var processors = [
+		autoprefixer({browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7']}),
+		mqpacker
+		//csswring({preserveHacks: true})
+	];
+	return gulp.src(paths.stylesheets_build.src)
     .pipe(plumber())
     .pipe(stylus({set:['linenos']}))
-    .pipe(autoprefixer("last 4 version", "> 1%", "ie 8", "ie 7"))
+    .pipe(postcss(processors))
     .pipe(gulp.dest(paths.stylesheets_build.dest))
     .pipe(rename("style.min.css"))
     .pipe(csso())

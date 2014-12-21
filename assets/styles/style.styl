@@ -1,14 +1,28 @@
-@import 'blocks/global.styl'
-@import 'blocks/header.styl'
-@import 'blocks/footer.styl'
+@import 'includes/variables';
+//@import 'includes/mixins';
+//@import 'includes/global';
+//@import 'includes/kite';
+
 
 .npofopr
 	display: inline-block
 	vertical-align: top
-	zoom: 1 /* Fix for IE7 */
-	*display: inline /* Fix for IE7 */
 	border: 1px solid #f00
+	box-shadow: 0 1px 1px #000
+	background: linear-gradient(top, hsla(0,0%,100%,.1), hsla(0,0%,0%,.1))
+	height: 100px
+	width: 200px
 
-body
-	background: pink
 
+
+@media (min-width: 320px)
+	.foo
+		width: 100px
+
+@media (min-width: 640px)
+	.bar
+		width: 200px
+
+@media (min-width: 320px)
+	.baz
+		width: 300px

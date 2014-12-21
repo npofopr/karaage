@@ -2,7 +2,7 @@
 // <img data-jpg="image.jpg" data-webp="image.webp" id="myimg" alt="My image">
 //.webp .container { background-image: url('image.webp'); }
 // .no-webp .container { background-image: url('image.jpg'); }
-	Modernizr.on('webp', function (result) {
+	/*Modernizr.on('webp', function (result) {
 	  var img = document.getElementById('myimg');
 	  if (result) {
 	    img.src = img.getAttribute('data-webp');
@@ -10,7 +10,7 @@
 	  else {
 	    img.src = img.getAttribute('data-jpg');
 	  }
-	});
+	});*/
 
 // квадратные блоки
 $(document).ready(function () {
@@ -35,7 +35,7 @@ function updateContainer() {
 $(document).ready(function() {
 
 	if(!Modernizr.svg) {
-	  $('img[src*="svg"]').attr('src', function() {  
+	  $('img[src*="svg"]').attr('src', function() {
 	    return $(this).attr('src').replace('.svg', '.png');
 	  });
 	}

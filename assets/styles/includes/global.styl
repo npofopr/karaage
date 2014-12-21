@@ -1,0 +1,329 @@
+@font-face
+    font-family: 'proxima_nova_rgregular';
+    src: url('fonts/proximanova-reg-webfont.eot');
+    src: url('fonts/proximanova-reg-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/proximanova-reg-webfont.woff2') format('woff2'),
+         url('fonts/proximanova-reg-webfont.woff') format('woff'),
+         url('fonts/proximanova-reg-webfont.ttf') format('truetype'),
+         url('fonts/proximanova-reg-webfont.svg#proxima_nova_rgregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+@font-face
+    font-family: 'proxima_nova_ltlight';
+    src: url('fonts/proximanova-light-webfont.eot');
+    src: url('fonts/proximanova-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/proximanova-light-webfont.woff2') format('woff2'),
+         url('fonts/proximanova-light-webfont.woff') format('woff'),
+         url('fonts/proximanova-light-webfont.ttf') format('truetype'),
+         url('fonts/proximanova-light-webfont.svg#proxima_nova_ltlight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+@font-face
+    font-family: 'proxima_nova_rgbold';
+    src: url('fonts/proximanova-bold-webfont.eot');
+    src: url('fonts/proximanova-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/proximanova-bold-webfont.woff2') format('woff2'),
+         url('fonts/proximanova-bold-webfont.woff') format('woff'),
+         url('fonts/proximanova-bold-webfont.ttf') format('truetype'),
+         url('fonts/proximanova-bold-webfont.svg#proxima_nova_rgbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+@font-face
+    font-family: 'proxima_novalight_italic';
+    src: url('fonts/proximanova-lightit-webfont.eot');
+    src: url('fonts/proximanova-lightit-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/proximanova-lightit-webfont.woff2') format('woff2'),
+         url('fonts/proximanova-lightit-webfont.woff') format('woff'),
+         url('fonts/proximanova-lightit-webfont.ttf') format('truetype'),
+         url('fonts/proximanova-lightit-webfont.svg#proxima_novalight_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+@font-face
+    font-family: 'proxima_novabold_italic';
+    src: url('fonts/proximanova-boldit-webfont.eot');
+    src: url('fonts/proximanova-boldit-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/proximanova-boldit-webfont.woff2') format('woff2'),
+         url('fonts/proximanova-boldit-webfont.woff') format('woff'),
+         url('fonts/proximanova-boldit-webfont.ttf') format('truetype'),
+         url('fonts/proximanova-boldit-webfont.svg#proxima_novabold_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+@font-face
+    font-family: 'proxima_novaregular_italic';
+    src: url('fonts/proximanova-regit-webfont.eot');
+    src: url('fonts/proximanova-regit-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/proximanova-regit-webfont.woff2') format('woff2'),
+         url('fonts/proximanova-regit-webfont.woff') format('woff'),
+         url('fonts/proximanova-regit-webfont.ttf') format('truetype'),
+         url('fonts/proximanova-regit-webfont.svg#proxima_novaregular_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+
+
+
+*
+	box-sizing: border-box
+
+::-webkit-scrollbar
+	width: 6px
+	height: 6px
+::-webkit-scrollbar-track-piece
+	background-color: white
+::-webkit-scrollbar-thumb
+	background-color: #7D7D7D
+	border-radius: 3px
+	&:hover
+		background-color: #999
+	&:active
+		background-color: #666
+
+::-moz-selection
+	background: #1c82b8
+	color: #fff
+	text-shadow: none
+::selection
+	background: #1c82b8
+	color: #fff
+	text-shadow: none
+
+input:-moz-placeholder,
+textarea:-moz-placeholder
+	color: #7a7e80
+	font-size: inherit
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder
+	color: #7a7e80
+	font-size: inherit
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder
+	color: #7a7e80
+	font-size: inherit
+
+input:focus:-moz-placeholder,
+textarea:focus:-moz-placeholder
+	color:transparent
+input:focus:-ms-input-placeholder,
+textarea:focus:-ms-input-placeholder
+	color:transparent
+input:focus::-webkit-input-placeholder,
+textarea:focus::-webkit-input-placeholder
+	color:transparent
+
+svg:not(:root)
+	overflow: hidden
+
+.clearfix
+	*zoom: 1
+	&:before,
+	&:after
+		display: table
+		line-height: 0
+		content: ""
+	&:after
+		clear: both
+
+hr
+	background: #d4dde4
+	height: 1px
+	border: none
+	margin: 30px 0 26px
+
+.hide-text
+	font-size: 0
+	line-height: 0
+	color: transparent
+	text-shadow: none
+	background-color: transparent
+	border: 0
+
+.hidden,
+.hide
+	display: none
+
+.pull-left
+	float: left !important
+.pull-right
+	float: right !important
+.text_opacity
+	opacity: .7
+.text-left
+	display: block
+	text-align: left !important
+.text-center
+	display: block
+	text-align: center !important
+.text-right
+	display: block
+	text-align: right !important
+
+menu, ol, ul
+	padding: 0 0 0 28px
+
+html
+	position: relative
+	min-height: 100%
+
+html,
+body
+	height: 100%
+
+body
+	font-family: $font
+	font-size $font-size
+	line-height: $line-height
+	color: $color
+	padding: 0
+	background-size: cover
+	background-repeat: no-repeat
+	background-position: top center
+	position: relative
+
+#loyout
+	//max-width: 100%
+	min-height: 100%
+	height: auto !important
+	height: 100%
+	margin: 0 auto
+	padding: 0
+	background: white
+
+.container
+	width: 960px
+	margin: 0 auto
+
+a
+	color: $color-link
+	text-decoration: none
+	&:hover,
+	&:focus
+		color: $color-link
+		text-decoration: underline
+		outline: 0
+
+.pre_link
+	text-decoration: none
+	border-bottom: 1px dotted $color-link
+	&:hover,
+	&:focus
+		border-bottom-color: transparent
+
+ul, ol
+	margin-top: 0
+	margin-bottom: 10px
+
+p
+	margin: 0 0 10px
+
+.site_link
+	position: fixed
+	z-index: 999
+	right: 0
+	bottom: 0
+	background: #eee
+	padding: 10px
+	ul
+		list-style: none
+		padding: 0
+		margin: 0
+		a
+			color: #444
+			font-size: 10px
+
+/*============================
+=            Head            =
+============================*/
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6
+	font-family: $font-roboto
+	font-weight: normal
+
+h1,
+.h1
+	font-size: $h1-font-size
+	line-height: $h1-line-height
+	margin: 0 0 14px
+
+h2,
+.h2
+	font-size: $h2-font-size
+	line-height: $h2-line-height
+	margin: 0 0 11px
+	color: #2c2c2c
+	text-transform: uppercase
+
+h3,
+.h3
+	font-size: $h3-font-size
+	line-height: $h3-line-height
+	font-weight: bold
+	margin: 0 0 15px
+	color: #2c2c2c
+
+h4,
+.h4
+	font-size: $h4-font-size
+	line-height: $h4-line-height
+	font-weight: normal
+	margin: 0 0 15px
+	color: #0c0c0c
+
+h5,
+.h5
+	font-size: $h5-font-size
+	line-height: $h5-line-height
+	margin: 0 0 15px
+
+h6,
+.h6
+	font-size: $h6-font-size
+	line-height: $h6-line-height
+	margin: 0 0 15px
+
+/*-----  End of Head  ------*/
+
+/*============================
+=            Help            =
+============================*/
+.media
+	overflow: hidden
+	zoom: 1
+	line-height: 20px
+	.pull-left
+		margin-right: 7px
+	&-object
+		display: block
+	&-body
+		overflow: hidden
+		zoom: 1
+
+.no_wrap
+	white-space: nowrap
+
+.row
+	position: relative
+	*zoom: 1
+	&:before,
+	&:after
+		display: table
+		line-height: 0
+		content: ""
+	&:after
+		clear: both
+	.col6
+		float: left
+		width: 50%
+		padding-right: 15px
+		position: relative
+		&:last-child
+			padding-left: 15px
