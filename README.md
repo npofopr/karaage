@@ -1,13 +1,11 @@
 # Gulp JS
 
-Простой путь разработки с Jade и Stylus + imagemin, svgmin, autoprefixer и конечно минификация. Весь html проверяется htmlhint.
-
 sudo npm install -g
 
 npm install
 
-gulp watch для разработки
+gulp для разработки
 
-gulp build для сборки
+gulp clean для очистки папки ./build/
 
-> browser-sync connect connect-livereload gulp gulp-autoprefixer gulp-changed gulp-clean gulp-concat gulp-csscomb gulp-csso gulp-header gulp-html-prettify gulp-html-replace gulp-htmlhint gulp-ignore gulp-imagemin gulp-jade gulp-livereload gulp-plumber gulp-rename gulp-stylus gulp-svgmin gulp-uglify gulp-webp gulp-zip imagemin-optipng imagemin-svgo jpegtran-bin socket.io tiny-lr
+npm install --save-dev browser-sync gulp autoprefixer-core css-mqpacker csswring gulp-postcss gulp-imagemin gulp-jade gulp-minify-css gulp-rigger gulp-sourcemaps gulp-uglify gulp-watch imagemin-pngquant rimraf
