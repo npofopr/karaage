@@ -1,12 +1,14 @@
 'use strict';
 
 var gulp = require('gulp'),
+    fs = require("fs"),
     watch = require('gulp-watch'),
     postcss = require('gulp-postcss'),
     sourcemaps = require('gulp-sourcemaps'),
     autoprefixer = require('autoprefixer-core'),
     mqpacker = require('css-mqpacker'),
-	csswring = require('csswring'),
+    csswring = require('csswring'),
+    atImport = require("postcss-import"),
     jade = require('gulp-jade'),
     uglify = require('gulp-uglify'),
     rigger = require('gulp-rigger'),
@@ -20,6 +22,8 @@ var gulp = require('gulp'),
     size = require('gulp-filesize'),
     newer = require('gulp-newer'),
     bump = require('gulp-bump'),
+    gutil = require('gulp-util'),
+    ftp = require('gulp-ftp'),
     browserSync = require("browser-sync"),
     reload = browserSync.reload;
 
@@ -31,7 +35,9 @@ var path = {
         css: 'build/style/',
         img: 'build/images/',
         fonts: 'build/fonts/',
-        jspartials: 'build/js/partials/'
+        csspartials: 'build/style/partials/',
+        jspartials: 'build/js/partials/',
+        staticf: 'build/'
     },
     src: {
         html: 'src/*.html',
@@ -41,7 +47,9 @@ var path = {
         style: 'src/style/style.css',
         img: 'src/images/**/*.*',
         fonts: 'src/fonts/**/*.*',
-        jspartials: 'src/js/partials/**/*.*'
+        csspartials: 'src/style/partials/**/*.*',
+        jspartials: 'src/js/partials/**/*.*',
+        staticf: 'src/static/**/*.*'
     },
     watch: {
         html: 'src/**/*.html',
@@ -50,10 +58,23 @@ var path = {
         style: 'src/style/**/*.css',
         img: 'src/images/**/*.*',
         fonts: 'src/fonts/**/*.*',
-        jspartials: 'src/js/partials/**/*.*'
+        csspartials: 'src/style/partials/**/*.*',
+        jspartials: 'src/js/partials/**/*.*',
+        staticf: 'src/static/**/*.*'
     },
     clean: './build'
 };
+
+gulp.task('ftp', function () {
+    return gulp.src('./build/')
+        .pipe(ftp({
+            host: 'shadow.perm.ru'
+        }))
+        // you need to have some kind of stream after gulp-ftp to make sure it's flushed
+        // this can be a gulp plugin, gulp.dest, or any kind of stream
+        // here we use a passthrough stream
+        .pipe(gutil.noop());
+});
 
 var config = {
     server: {
@@ -61,8 +82,7 @@ var config = {
     },
     tunnel: true,
     host: 'localhost',
-    port: 9000,
-    logPrefix: "AVA_frontend"
+    port: 9000
 };
 
 gulp.task('webserver', function () {
@@ -78,7 +98,7 @@ gulp.task('html:build', function () {
         .pipe(rigger())
         .pipe(gulp.dest(path.build.html))
         .pipe(reload({stream: true}))
-        .pipe(size())
+        //.pipe(size())
         .pipe(notifier('Html Compiled'));
 });
 
@@ -90,7 +110,7 @@ gulp.task('jade:build', function () {
         }))
         .pipe(gulp.dest(path.build.jade))
         .pipe(reload({stream: true}))
-        .pipe(size())
+        //.pipe(size())
         .pipe(notifier('Jade Compiled'));
 });
 
@@ -104,32 +124,34 @@ gulp.task('js:build', function () {
         .pipe(rename("index.min.js"))
         .pipe(gulp.dest(path.build.js))
         .pipe(reload({stream: true}))
-        .pipe(size())
+        //.pipe(size())
         .pipe(notifier('JS Compiled'));
 });
 
 gulp.task('style:build', function () {
     var processors = [
-		autoprefixer({browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7']}),
-		//mqpacker
-		//csswring({preserveHacks: true})
-	];
+        autoprefixer({browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7']})
+        //atImport()
+        //mqpacker
+        //csswring({preserveHacks: true})
+    ];
     return gulp.src(path.src.style)
+        .pipe(rigger())
         .pipe(sourcemaps.init())
         .pipe(postcss(processors))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(path.build.css))
+        .pipe(reload({stream: true}))
         .pipe(cssmin())
         .pipe(rename("style.min.css"))
         .pipe(gulp.dest(path.build.css))
-        .pipe(reload({stream: true}))
-        .pipe(size())
+        //.pipe(size())
         .pipe(notifier('Style Compiled, Prefixed and Minified'));
 });
 
 gulp.task('image:build', function () {
     gulp.src(path.src.img)
-        .pipe(newer(gulp.dest(path.build.img)))
+        //.pipe(newer(gulp.dest(path.build.img)))
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
@@ -146,14 +168,21 @@ gulp.task('image:build', function () {
 //
 // .. Copy
 //
-gulp.task('copy:fonts', function() {
+gulp.task('copyfonts', function() {
     gulp.src(path.src.fonts)
         .pipe(gulp.dest(path.build.fonts));
 });
-
-gulp.task('copy:jspartials', function() {
+gulp.task('copycss', function() {
+    gulp.src(path.src.csspartials)
+        .pipe(gulp.dest(path.build.csspartials));
+});
+gulp.task('copyjs', function() {
     gulp.src(path.src.jspartials)
         .pipe(gulp.dest(path.build.jspartials));
+});
+gulp.task('copystatic', function() {
+    gulp.src(path.src.staticf)
+        .pipe(gulp.dest(path.build.staticf));
 });
 
 
@@ -178,8 +207,10 @@ gulp.task('build', [
     'js:build',
     'style:build',
     'image:build',
-    'copy:fonts',
-    'copy:jspartials'
+    'copyfonts',
+    'copycss',
+    'copyjs',
+    'copystatic'
 ]);
 
 
@@ -200,10 +231,16 @@ gulp.task('watch', function(){
         gulp.start('image:build');
     });
     watch([path.watch.fonts], function(event, cb) {
-        gulp.start('fonts:copy');
+        gulp.start('copyfonts');
+    });
+    watch([path.watch.csspartials], function(event, cb) {
+        gulp.start('copycss');
     });
     watch([path.watch.jspartials], function(event, cb) {
-        gulp.start('jspartials:copy');
+        gulp.start('copyjs');
+    });
+    watch([path.watch.staticf], function(event, cb) {
+        gulp.start('copystatic');
     });
 });
 
