@@ -23,7 +23,6 @@ var gulp = require('gulp'),
     newer = require('gulp-newer'),
     bump = require('gulp-bump'),
     gutil = require('gulp-util'),
-    ftp = require('gulp-ftp'),
     browserSync = require("browser-sync"),
     reload = browserSync.reload;
 
@@ -64,17 +63,6 @@ var path = {
     },
     clean: './build'
 };
-
-gulp.task('ftp', function () {
-    return gulp.src('./build/')
-        .pipe(ftp({
-            host: 'shadow.perm.ru'
-        }))
-        // you need to have some kind of stream after gulp-ftp to make sure it's flushed
-        // this can be a gulp plugin, gulp.dest, or any kind of stream
-        // here we use a passthrough stream
-        .pipe(gutil.noop());
-});
 
 var config = {
     server: {
