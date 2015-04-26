@@ -1,3 +1,8 @@
+/* can consume `node_modules`, `web_modules` or local modules
+@import "cssrecipes-defaults"; /* == @import "./node_modules/cssrecipes-defaults/index.css"; */
+@import "partials/variable.css";
+@import "partials/variable.css" (min-width: 25em);
+
 $colorfore: #333;
 $colorback: #fff;
 $blue: #056ef0;

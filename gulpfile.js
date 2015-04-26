@@ -14,6 +14,7 @@ var gulp = require('gulp'),
 	at2x = require('postcss-at2x'),
 	duplicates = require('postcss-discard-duplicates'),
 	empty = require('postcss-discard-empty'),
+	atImport = require('postcss-import'),
 	//end postcss
 	sourcemaps = require('gulp-sourcemaps'),
 	jade = require('gulp-jade'),
@@ -125,15 +126,18 @@ gulp.task('js:build', function () {
 
 gulp.task('style:build', function () {
 	var processors = [
+		atImport({
+			path: ["src/style"]
+		}),
 		mixins(),
 		svars(),
 		nested(),
 		focus(),
 		at2x(),
-		autoprefixer({ browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7'] }),
 		minmax(),
 		duplicates(),
-		empty()
+		empty(),
+		autoprefixer({ browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7'] })
 	];
 	gulp.src(path.src.style)
 		.pipe(rigger())
