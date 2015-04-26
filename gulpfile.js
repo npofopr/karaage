@@ -26,6 +26,7 @@ var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	rigger = require('gulp-rigger'),
 	csso = require('gulp-csso'),
+	rev = require('gulp-rev-append'),
 	imagemin = require('gulp-imagemin'),
 	pngquant = require('imagemin-pngquant'),
 	rename = require('gulp-rename'),
@@ -99,6 +100,7 @@ gulp.task('html:build', function () {
 		.pipe(rigger())
 		.pipe(htmlhint('.htmlhintrc'))
 		.pipe(htmlhint.reporter())
+		.pipe(rev())
 		.pipe(gulp.dest(path.build.html))
 		.pipe(reload({stream: true}))
 		//.pipe(size())
@@ -114,6 +116,8 @@ gulp.task('jade:build', function () {
 		.pipe(gulp.dest(path.build.jade))
 		.pipe(htmlhint('.htmlhintrc'))
 		.pipe(htmlhint.reporter())
+		.pipe(rev())
+		.pipe(gulp.dest(path.build.jade))
 		.pipe(reload({stream: true}))
 		//.pipe(size())
 		.pipe(notifier('Jade Compiled'));
@@ -155,12 +159,12 @@ gulp.task('style:build', function () {
 		.pipe(rigger())
 		.pipe(sourcemaps.init())
 		.pipe(postcss(processors))
-		.pipe(sourcemaps.write())
 		.pipe(uncss({
 			html: ['build/**/*.html'],
 			report: true
 			//uncssrc: '.uncssrc'
 		}))
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(path.build.css))
 		.pipe(reload({stream: true}))
 		.pipe(csso())
