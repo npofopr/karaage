@@ -4,11 +4,13 @@ sudo npm install -g
 
 npm install
 
-gulp для разработки
+gulp watch для разработки
 
 gulp clean для очистки папки ./build/
 
-npm install --save-dev browser-sync gulp autoprefixer-core css-mqpacker csswring gulp-postcss gulp-imagemin gulp-jade gulp-minify-css gulp-rigger gulp-sourcemaps gulp-uglify gulp-watch imagemin-pngquant rimraf
+gulp build для сборки
+
+npm install --save-dev autoprefixer-core browser-sync css-mqpacker gulp gulp-bump gulp-copy gulp-csso gulp-filesize gulp-htmlhint gulp-imagemin gulp-jade gulp-newer gulp-notify gulp-postcss gulp-rename gulp-rev-append gulp-rigger gulp-sourcemaps gulp-uglify gulp-uncss gulp-update gulp-util gulp-watch imagemin-pngquant postcss postcss-at2x postcss-discard-duplicates postcss-discard-empty postcss-focus postcss-import postcss-media-minmax postcss-merge-rules postcss-minify-font-weight postcss-mixins postcss-nested postcss-simple-vars rimraf
 
 
 ### HTML&CSS
