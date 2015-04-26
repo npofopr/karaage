@@ -83,3 +83,18 @@ h2 {}
 {
 	color: blue;
 }
+
+a {
+	color: blue
+}
+a {
+	font-weight: bold
+}
+a {
+	color: blue;
+	font-weight: bold
+}
+p {
+	color: blue;
+	font-weight: bold
+}
