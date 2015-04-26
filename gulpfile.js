@@ -18,10 +18,10 @@ var gulp = require('gulp'),
 	mergeRules = require('postcss-merge-rules'),
 	fontWeight = require('postcss-minify-font-weight'),
 	mqpacker = require('css-mqpacker'),
-	//csswring = require('csswring'),
 	//end postcss
 	sourcemaps = require('gulp-sourcemaps'),
 	jade = require('gulp-jade'),
+	htmlhint = require("gulp-htmlhint"),
 	uglify = require('gulp-uglify'),
 	rigger = require('gulp-rigger'),
 	cssmin = require('gulp-minify-css'),
@@ -96,6 +96,8 @@ gulp.task('clean', function (cb) {
 gulp.task('html:build', function () {
 	gulp.src(path.src.html)
 		.pipe(rigger())
+		.pipe(htmlhint('.htmlhintrc'))
+		.pipe(htmlhint.reporter())
 		.pipe(gulp.dest(path.build.html))
 		.pipe(reload({stream: true}))
 		//.pipe(size())
@@ -109,6 +111,8 @@ gulp.task('jade:build', function () {
 			pretty: true
 		}))
 		.pipe(gulp.dest(path.build.jade))
+		.pipe(htmlhint('.htmlhintrc'))
+		.pipe(htmlhint.reporter())
 		.pipe(reload({stream: true}))
 		//.pipe(size())
 		.pipe(notifier('Jade Compiled'));
