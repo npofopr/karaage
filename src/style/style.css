@@ -1,5 +1,7 @@
 $colorfore: #333;
 $colorback: #fff;
+$blue: #056ef0;
+$column: 200px;
 
 @define-mixin reset {
 	padding: 0;
@@ -29,6 +31,29 @@ main {
 	}
 }
 
+.menu {
+	width: calc(4 * $column);
+}
+.menu_link {
+	background: $blue;
+	width: $column;
+}
+
+.phone {
+	&_title {
+		width: 500px;
+		@media (max-width: 500px) {
+			width: auto;
+		}
+		body.is_dark & {
+			color: white;
+		}
+	}
+	img {
+		display: block;
+	}
+}
+
 .button:hover {
 	background: red;
 }
@@ -37,4 +62,8 @@ main {
 	.bar {
 		display: block;
 	}
+}
+
+.logo {
+	background: red url('../images/logo.png') no-repeat 0 0 at-2x;
 }

@@ -11,6 +11,7 @@ var gulp = require('gulp'),
 	focus = require('postcss-focus'),
 	autoprefixer = require('autoprefixer-core'),
 	minmax = require('postcss-media-minmax'),
+	at2x = require('postcss-at2x'),
 	//end postcss
 	sourcemaps = require('gulp-sourcemaps'),
 	jade = require('gulp-jade'),
@@ -126,7 +127,8 @@ gulp.task('style:build', function () {
 		svars(),
 		nested(),
 		focus(),
-		autoprefixer({ browsers: ['last 14 version', '> 1%', 'ie 8', 'ie 7'] }),
+		at2x(),
+		autoprefixer({ browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7'] }),
 		minmax()
 	];
 	gulp.src(path.src.style)
