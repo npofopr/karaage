@@ -24,7 +24,7 @@ var gulp = require('gulp'),
 	htmlhint = require("gulp-htmlhint"),
 	uglify = require('gulp-uglify'),
 	rigger = require('gulp-rigger'),
-	cssmin = require('gulp-minify-css'),
+	csso = require('gulp-csso'),
 	imagemin = require('gulp-imagemin'),
 	pngquant = require('imagemin-pngquant'),
 	rename = require('gulp-rename'),
@@ -157,9 +157,8 @@ gulp.task('style:build', function () {
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(path.build.css))
 		.pipe(reload({stream: true}))
-		//.pipe(cssmin())
-		//.pipe(rename("style.min.css"))
-
+		.pipe(csso())
+		.pipe(rename("style.min.css"))
 		.pipe(gulp.dest(path.build.css))
 		//.pipe(size())
 		.pipe(notifier('Style Compiled, Prefixed and Minified'));
