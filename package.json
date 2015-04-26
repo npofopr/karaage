@@ -41,6 +41,7 @@
     "rimraf": "^2.3.2"
   },
   "dependencies": {
-    "postcss-discard-duplicates": "^1.1.2"
+    "postcss-discard-duplicates": "^1.1.2",
+    "postcss-discard-empty": "^1.1.0"
   }
 }
