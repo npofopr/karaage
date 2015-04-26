@@ -2,26 +2,33 @@ $colorfore: #333;
 $colorback: #fff;
 
 @define-mixin reset {
-    padding: 0;
-    margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 .npofopr {
-    color: #000;
-    background: pink;
-    box-shadow: 1px 1px 1px red;
-    opacity: .5;
-    text-shadow: 0 1px 1px black;
+	color: #000;
+	background: pink;
+	box-shadow: 1px 1px 1px red;
+	opacity: .5;
+	text-shadow: 0 1px 1px black;
 }
 
 main {
-    font-family: Arial;
-    @mixin reset;
-    color: $colorfore;
-    background-color: $colorback;
+	font-family: Arial;
+	@mixin reset;
+	color: $colorfore;
+	background-color: $colorback;
 
-    article {
-        color: $colorback;
-        background-color: $colorfore;
-    }
+	article {
+		color: $colorback;
+		background-color: $colorfore;
+		&:hover {
+			color: red;
+		}
+	}
+}
+
+.button:hover {
+	background: red;
 }

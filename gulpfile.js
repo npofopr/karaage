@@ -8,6 +8,7 @@ var gulp = require('gulp'),
 		require('postcss-mixins'),
 		require('postcss-simple-vars'),
 		require('postcss-nested'),
+		require('postcss-focus'),
 		//function(css) {
 			// sans-serif fallback
 		//	css.eachDecl('font-family', function(decl) {
