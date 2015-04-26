@@ -26,6 +26,7 @@
     "gulp-rigger": "^0.5.8",
     "gulp-sourcemaps": "^1.5.1",
     "gulp-uglify": "^1.1.0",
+    "gulp-uncss": "^1.0.1",
     "gulp-update": "0.0.2",
     "gulp-util": "^3.0.4",
     "gulp-watch": "^4.2.0",

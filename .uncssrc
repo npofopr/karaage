@@ -1,0 +1,8 @@
+{
+	"ignore": [
+		"/\.success-page.*/",
+		".tip",
+		".twrap",
+		".reveal-modal"
+	]
+}

@@ -21,7 +21,8 @@ var gulp = require('gulp'),
 	//end postcss
 	sourcemaps = require('gulp-sourcemaps'),
 	jade = require('gulp-jade'),
-	htmlhint = require("gulp-htmlhint"),
+	htmlhint = require('gulp-htmlhint'),
+	uncss = require('gulp-uncss'),
 	uglify = require('gulp-uglify'),
 	rigger = require('gulp-rigger'),
 	csso = require('gulp-csso'),
@@ -155,6 +156,11 @@ gulp.task('style:build', function () {
 		.pipe(sourcemaps.init())
 		.pipe(postcss(processors))
 		.pipe(sourcemaps.write())
+		.pipe(uncss({
+			html: ['build/**/*.html'],
+			report: true
+			//uncssrc: '.uncssrc'
+		}))
 		.pipe(gulp.dest(path.build.css))
 		.pipe(reload({stream: true}))
 		.pipe(csso())
