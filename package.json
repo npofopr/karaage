@@ -39,5 +39,8 @@
     "postcss-nested": "^0.2.2",
     "postcss-simple-vars": "^0.2.4",
     "rimraf": "^2.3.2"
+  },
+  "dependencies": {
+    "postcss-discard-duplicates": "^1.1.2"
   }
 }

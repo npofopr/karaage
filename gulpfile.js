@@ -12,6 +12,7 @@ var gulp = require('gulp'),
 	autoprefixer = require('autoprefixer-core'),
 	minmax = require('postcss-media-minmax'),
 	at2x = require('postcss-at2x'),
+	duplicates = require('postcss-discard-duplicates'),
 	//end postcss
 	sourcemaps = require('gulp-sourcemaps'),
 	jade = require('gulp-jade'),
@@ -129,7 +130,8 @@ gulp.task('style:build', function () {
 		focus(),
 		at2x(),
 		autoprefixer({ browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7'] }),
-		minmax()
+		minmax(),
+		duplicates()
 	];
 	gulp.src(path.src.style)
 		.pipe(rigger())
