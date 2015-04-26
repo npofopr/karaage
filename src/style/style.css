@@ -86,16 +86,36 @@ h2 {}
 }
 
 a {
-	color: blue
+	color: blue;
 }
 a {
-	font-weight: bold
+	font-weight: bold;
 }
 a {
 	color: blue;
-	font-weight: bold
+	font-weight: bold;
 }
 p {
 	color: blue;
-	font-weight: bold
+	font-weight: bold;
+}
+
+.foo::before {
+	content: "foo on small";
+}
+
+@media screen and (min-width: 769px) {
+	.foo::before {
+		content: "foo on medium";
+	}
+}
+
+.bar::before {
+	content: "bar on small";
+}
+
+@media screen and (min-width: 769px) {
+	.bar::before {
+		content: "bar on medium";
+	}
 }

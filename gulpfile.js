@@ -17,6 +17,8 @@ var gulp = require('gulp'),
 	atImport = require('postcss-import'),
 	mergeRules = require('postcss-merge-rules'),
 	fontWeight = require('postcss-minify-font-weight'),
+	mqpacker = require('css-mqpacker'),
+	//csswring = require('csswring'),
 	//end postcss
 	sourcemaps = require('gulp-sourcemaps'),
 	jade = require('gulp-jade'),
@@ -135,13 +137,14 @@ gulp.task('style:build', function () {
 		svars(),
 		nested(),
 		focus(),
+		autoprefixer({ browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7'] }),
 		at2x(),
-		minmax(),
-		duplicates(),
-		empty(),
 		mergeRules(),
 		fontWeight(),
-		autoprefixer({ browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7'] })
+		duplicates(),
+		empty(),
+		minmax(),
+		mqpacker()
 	];
 	gulp.src(path.src.style)
 		.pipe(rigger())
@@ -150,8 +153,9 @@ gulp.task('style:build', function () {
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(path.build.css))
 		.pipe(reload({stream: true}))
-		.pipe(cssmin())
-		.pipe(rename("style.min.css"))
+		//.pipe(cssmin())
+		//.pipe(rename("style.min.css"))
+
 		.pipe(gulp.dest(path.build.css))
 		//.pipe(size())
 		.pipe(notifier('Style Compiled, Prefixed and Minified'));

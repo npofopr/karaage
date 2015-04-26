@@ -11,7 +11,7 @@
     "autoprefixer-core": "^5.1.11",
     "browser-sync": "^2.3.1",
     "css-mqpacker": "^3.1.0",
-    "csswring": "^3.0.2",
+    "csswring": "^3.0.3",
     "gulp": "^3.8.11",
     "gulp-bump": "^0.3.0",
     "gulp-copy": "0.0.2",
