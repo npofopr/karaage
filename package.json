@@ -43,6 +43,7 @@
   "dependencies": {
     "postcss-discard-duplicates": "^1.1.2",
     "postcss-discard-empty": "^1.1.0",
-    "postcss-merge-rules": "^1.2.2"
+    "postcss-merge-rules": "^1.2.2",
+    "postcss-minify-font-weight": "^1.0.0"
   }
 }

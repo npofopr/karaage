@@ -16,6 +16,7 @@ var gulp = require('gulp'),
 	empty = require('postcss-discard-empty'),
 	atImport = require('postcss-import'),
 	mergeRules = require('postcss-merge-rules'),
+	fontWeight = require('postcss-minify-font-weight'),
 	//end postcss
 	sourcemaps = require('gulp-sourcemaps'),
 	jade = require('gulp-jade'),
@@ -139,6 +140,7 @@ gulp.task('style:build', function () {
 		duplicates(),
 		empty(),
 		mergeRules(),
+		fontWeight(),
 		autoprefixer({ browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7'] })
 	];
 	gulp.src(path.src.style)
