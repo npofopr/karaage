@@ -32,3 +32,9 @@ main {
 .button:hover {
 	background: red;
 }
+
+@media screen and (width >= 500px) and (width <= 1200px) {
+	.bar {
+		display: block;
+	}
+}

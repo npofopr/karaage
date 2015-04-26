@@ -3,25 +3,16 @@
 var gulp = require('gulp'),
 	fs = require('fs'),
 	watch = require('gulp-watch'),
+	//begin postcss
 	postcss = require('gulp-postcss'),
-	processors = [
-		require('postcss-mixins'),
-		require('postcss-simple-vars'),
-		require('postcss-nested'),
-		require('postcss-focus'),
-		//function(css) {
-			// sans-serif fallback
-		//	css.eachDecl('font-family', function(decl) {
-		//		decl.value = decl.value + ', sans-serif';
-		//	});
-		//},
-		require('autoprefixer-core')({ browsers: ['last 4 version', '> 1%', 'ie 8', 'ie 7'] })
-	],
+	mixins = require('postcss-mixins'),
+	svars = require('postcss-simple-vars'),
+	nested = require('postcss-nested'),
+	focus = require('postcss-focus'),
+	autoprefixer = require('autoprefixer-core'),
+	minmax = require('postcss-media-minmax'),
+	//end postcss
 	sourcemaps = require('gulp-sourcemaps'),
-	//autoprefixer = require('autoprefixer-core'),
-	//mqpacker = require('css-mqpacker'),
-	//csswring = require('csswring'),
-	//atImport = require("postcss-import"),
 	jade = require('gulp-jade'),
 	uglify = require('gulp-uglify'),
 	rigger = require('gulp-rigger'),
@@ -130,6 +121,14 @@ gulp.task('js:build', function () {
 });
 
 gulp.task('style:build', function () {
+	var processors = [
+		mixins(),
+		svars(),
+		nested(),
+		focus(),
+		autoprefixer({ browsers: ['last 14 version', '> 1%', 'ie 8', 'ie 7'] }),
+		minmax()
+	];
 	gulp.src(path.src.style)
 		.pipe(rigger())
 		.pipe(sourcemaps.init())
