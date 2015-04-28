@@ -1,0 +1,13 @@
+/* TEAM */
+	Author:
+	Contact:
+	Twitter: @npofopr
+	Location: Russia, Perm
+
+/* THANKS */
+
+/* SITE */
+	Language: Russian
+	Standards: html5, css3
+	Components: jQuery, etc.
+	Software: Sublime Text, Photoshop

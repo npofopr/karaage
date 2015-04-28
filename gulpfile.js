@@ -29,6 +29,9 @@ var gulp = require('gulp'),
 	rev = require('gulp-rev-append'),
 	imagemin = require('gulp-imagemin'),
 	pngquant = require('imagemin-pngquant'),
+	jpegtran = require('imagemin-jpegtran'),
+	gifsicle = require('imagemin-gifsicle'),
+	optipng = require('imagemin-optipng'),
 	rename = require('gulp-rename'),
 	rimraf = require('rimraf'),
 	notifier = require('gulp-notify'),
@@ -45,11 +48,11 @@ var path = {
 		html: 'build/',
 		jade: 'build/',
 		js: 'build/js/',
-		css: 'build/style/',
+		css: 'build/css/',
 		img: 'build/images/',
 		fonts: 'build/fonts/',
-		csspartials: 'build/style/partials/',
-		jspartials: 'build/js/partials/',
+		csspartials: 'build/css/libs/',
+		jspartials: 'build/js/libs/',
 		staticf: 'build/'
 	},
 	src: {
@@ -57,22 +60,22 @@ var path = {
 		//jade: 'src/*.jade',
 		jade: ['src/*.jade', '!src/_*.jade'],
 		js: 'src/js/index.js',
-		style: 'src/style/style.css',
+		css: 'src/css/style.css',
 		img: 'src/images/**/*.*',
 		fonts: 'src/fonts/**/*.*',
-		csspartials: 'src/style/partials/**/*.*',
-		jspartials: 'src/js/partials/**/*.*',
+		csspartials: 'src/css/libs/**/*.*',
+		jspartials: 'src/js/libs/**/*.*',
 		staticf: 'src/static/**/*.*'
 	},
 	watch: {
 		html: 'src/**/*.html',
 		jade: 'src/*.jade',
 		js: 'src/js/**/*.js',
-		style: 'src/style/**/*.css',
+		css: 'src/css/**/*.css',
 		img: 'src/images/**/*.*',
 		fonts: 'src/fonts/**/*.*',
-		csspartials: 'src/style/partials/**/*.*',
-		jspartials: 'src/js/partials/**/*.*',
+		csspartials: 'src/css/libs/**/*.*',
+		jspartials: 'src/js/libs/**/*.*',
 		staticf: 'src/static/**/*.*'
 	},
 	clean: './build'
@@ -97,6 +100,7 @@ gulp.task('clean', function (cb) {
 
 gulp.task('html:build', function () {
 	gulp.src(path.src.html)
+		.pipe(newer(path.build.html))
 		.pipe(rigger())
 		.pipe(htmlhint('.htmlhintrc'))
 		.pipe(htmlhint.reporter())
@@ -109,6 +113,7 @@ gulp.task('html:build', function () {
 
 gulp.task('jade:build', function () {
 	gulp.src(path.src.jade)
+		.pipe(newer(path.build.jade))
 		//.pipe(changed('app', {extension: '.html'}))
 		.pipe(jade({
 			pretty: true
@@ -125,6 +130,7 @@ gulp.task('jade:build', function () {
 
 gulp.task('js:build', function () {
 	gulp.src(path.src.js)
+		.pipe(newer(path.build.js))
 		.pipe(rigger())
 		.pipe(sourcemaps.init())
 		.pipe(sourcemaps.write())
@@ -137,10 +143,10 @@ gulp.task('js:build', function () {
 		.pipe(notifier('JS Compiled'));
 });
 
-gulp.task('style:build', function () {
+gulp.task('css:build', function () {
 	var processors = [
 		atImport({
-			path: ["src/style"]
+			path: ["src/css"]
 		}),
 		mixins(),
 		svars(),
@@ -155,12 +161,13 @@ gulp.task('style:build', function () {
 		minmax(),
 		mqpacker()
 	];
-	gulp.src(path.src.style)
-		.pipe(rigger())
+	gulp.src(path.src.css)
+		.pipe(newer(path.build.css))
 		.pipe(sourcemaps.init())
 		.pipe(postcss(processors))
 		.pipe(uncss({
 			html: ['build/**/*.html'],
+			//ignore: ['label.active', '.dark-mode', 'span.tweet-time']
 			report: true
 			//uncssrc: '.uncssrc'
 		}))
@@ -176,11 +183,11 @@ gulp.task('style:build', function () {
 
 gulp.task('image:build', function () {
 	gulp.src(path.src.img)
-		//.pipe(newer(gulp.dest(path.build.img)))
+		.pipe(newer(path.build.img))
 		.pipe(imagemin({
 			progressive: true,
 			svgoPlugins: [{removeViewBox: false}],
-			use: [pngquant()],
+			use: [pngquant(), jpegtran(), optipng(), gifsicle()],
 			interlaced: true
 		}))
 		.pipe(gulp.dest(path.build.img))
@@ -230,7 +237,7 @@ gulp.task('build', [
 	'html:build',
 	'jade:build',
 	'js:build',
-	'style:build',
+	'css:build',
 	'image:build',
 	'copyfonts',
 	'copycss',
@@ -246,8 +253,8 @@ gulp.task('watch', function(){
 	watch([path.watch.jade], function(event, cb) {
 		gulp.start('jade:build');
 	});
-	watch([path.watch.style], function(event, cb) {
-		gulp.start('style:build');
+	watch([path.watch.css], function(event, cb) {
+		gulp.start('css:build');
 	});
 	watch([path.watch.js], function(event, cb) {
 		gulp.start('js:build');

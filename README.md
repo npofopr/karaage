@@ -4,7 +4,7 @@ sudo npm install -g
 
 npm install
 
-gulp watch для разработки
+gulp для разработки
 
 gulp clean для очистки папки ./build/
 
