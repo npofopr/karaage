@@ -1,7 +1,7 @@
 /* can consume `node_modules`, `web_modules` or local modules
 @import "cssrecipes-defaults"; /* == @import "./node_modules/cssrecipes-defaults/index.css"; */
 @import "_variable.css";
-@import "_variable.css" (min-width: 25em);
+/*@import "_variable.css" (min-width: 25em);*/
 
 $colorfore: #333;
 $colorback: #fff;
@@ -15,7 +15,7 @@ $column: 200px;
 
 .npofopr {
 	color: #000;
-	background: pink;
+	background: red;
 	box-shadow: 1px 1px 1px red;
 	opacity: .5;
 	text-shadow: 0 1px 1px black;
