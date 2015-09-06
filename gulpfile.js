@@ -6,6 +6,7 @@ var watch = require('gulp-watch');
 =            PostCSS            =
 ===============================*/
 var postcss = require('gulp-postcss');
+//var postcss = require('postcss');
 var precss = require('precss');
 var center = require('postcss-center');
 var pxtorem = require('postcss-pxtorem');
@@ -13,17 +14,17 @@ var short = require('postcss-short');
 var size = require('postcss-size');
 var clearfix = require('postcss-clearfix');
 var colorshort = require('postcss-color-short');
-var cssnano = require('cssnano');
-var cssnext = require('cssnext');
+//var cssnano = require('cssnano');
+//var cssnext = require('cssnext');
 //var mixins = require('postcss-mixins');
 //var svars = require('postcss-simple-vars');
 var nested = require('postcss-nested');
 //var discardcomments = require('postcss-discard-comments');
 var focus = require('postcss-focus');
-var autoprefixer = require('autoprefixer-core');
+var autoprefixer = require('autoprefixer');
 //var minmax = require('postcss-media-minmax');
 //var at2x = require('postcss-at2x');
-// error var duplicates = require('postcss-discard-duplicates');
+var duplicates = require('postcss-discard-duplicates');
 var empty = require('postcss-discard-empty');
 //var atImport = require('postcss-import');
 //var mergeRules = require('postcss-merge-rules');
@@ -157,27 +158,27 @@ gulp.task('js:build', function () {
 
 gulp.task('css:build', function () {
 	var processors = [
-		//precss,
-		//center,
-		//pxtorem,
-		//short,
-		//size,
-		//clearfix,
-		//colorshort,
+		precss,
+		center,
+		pxtorem,
+		short,
+		size,
+		clearfix,
+		colorshort,
 		//cssnano,
 		//cssnext,
-		//nested,
-		//focus,
-		autoprefixer({ browsers: ['last 2 version', 'IE 9'] })
-		//duplicates,
-		//empty,
-		//fontWeight,
-		//mqpacker,
-		/*svgFallback({
+		nested,
+		focus,
+		autoprefixer({ browsers: ['last 2 version', 'IE 9'] }),
+		duplicates,
+		empty,
+		fontWeight,
+		mqpacker,
+		svgFallback({
 			basePath: 'src/images/',
 			dest: 'build/images/',
 			fallbackSelector: '.no-svg'
-		})*/
+		})
 	];
 	gulp.src(path.src.css)
 		.pipe(newer(path.build.css))
