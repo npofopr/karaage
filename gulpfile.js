@@ -6,31 +6,33 @@ var watch = require('gulp-watch');
 =            PostCSS            =
 ===============================*/
 var postcss = require('gulp-postcss');
+var autoprefixer = require('autoprefixer');
 //var postcss = require('postcss');
 var precss = require('precss');
 var center = require('postcss-center');
 var pxtorem = require('postcss-pxtorem');
-var short = require('postcss-short');
+var short = require('postcss-short'); 	// Container#eachDecl is deprecated. Use Container#walkDecls instead.
+										// Node#removeSelf is deprecated. Use Node#remove.
 var size = require('postcss-size');
 var clearfix = require('postcss-clearfix');
 var colorshort = require('postcss-color-short');
+var focus = require('postcss-focus');
+var nested = require('postcss-nested');
+var duplicates = require('postcss-discard-duplicates');
+var empty = require('postcss-discard-empty'); // Container#eachRule is deprecated. Use Container#walkRules instead.
+var fontWeight = require('postcss-minify-font-weight');
+var mqpacker = require('css-mqpacker');
+var svgFallback = require('postcss-svg-fallback');
+
 //var cssnano = require('cssnano');
 //var cssnext = require('cssnext');
 //var mixins = require('postcss-mixins');
 //var svars = require('postcss-simple-vars');
-var nested = require('postcss-nested');
 //var discardcomments = require('postcss-discard-comments');
-var focus = require('postcss-focus');
-var autoprefixer = require('autoprefixer');
 //var minmax = require('postcss-media-minmax');
 //var at2x = require('postcss-at2x');
-var duplicates = require('postcss-discard-duplicates');
-var empty = require('postcss-discard-empty');
 //var atImport = require('postcss-import');
 //var mergeRules = require('postcss-merge-rules');
-var fontWeight = require('postcss-minify-font-weight');
-var mqpacker = require('css-mqpacker');
-var svgFallback = require('postcss-svg-fallback');
 /*=====  End of PostCSS  ======*/
 var sourcemaps = require('gulp-sourcemaps');
 var jade = require('gulp-jade');
@@ -158,6 +160,7 @@ gulp.task('js:build', function () {
 
 gulp.task('css:build', function () {
 	var processors = [
+		autoprefixer({ browsers: ['last 2 version', 'IE 9'] }),
 		precss,
 		center,
 		pxtorem,
@@ -165,11 +168,8 @@ gulp.task('css:build', function () {
 		size,
 		clearfix,
 		colorshort,
-		//cssnano,
-		//cssnext,
-		nested,
 		focus,
-		autoprefixer({ browsers: ['last 2 version', 'IE 9'] }),
+		nested,
 		duplicates,
 		empty,
 		fontWeight,
@@ -178,7 +178,9 @@ gulp.task('css:build', function () {
 			basePath: 'src/images/',
 			dest: 'build/images/',
 			fallbackSelector: '.no-svg'
-		})
+		}),
+		//cssnano,
+		//cssnext,
 	];
 	gulp.src(path.src.css)
 		.pipe(newer(path.build.css))

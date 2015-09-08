@@ -7,6 +7,7 @@ $colorfore: #333;
 $colorback: #fff;
 $blue: #056ef0;
 $column: 200px;
+$npofopr_text: yellow;
 
 @define-mixin reset {
 	padding: 0;
@@ -14,12 +15,11 @@ $column: 200px;
 }
 
 .npofopr {
-	color: #000;
+	color: $npofopr_text;
 	background: red;
 	box-shadow: 1px 1px 1px red;
 	opacity: .5;
 	text-shadow: 0 1px 1px black;
-	color: #000;
 }
 
 main {
@@ -47,7 +47,7 @@ main {
 
 .phone {
 	&_title {
-		width: 500px;
+		color: red;
 		@media (max-width: 500px) {
 			width: auto;
 		}

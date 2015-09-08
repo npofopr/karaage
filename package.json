@@ -8,7 +8,7 @@
     "url": "https://github.com/npofopr/my-gulpfile"
   },
   "devDependencies": {
-    "autoprefixer": "^6.0.1",
+    "autoprefixer": "^6.0.2",
     "bin-wrapper": "^3.0.2",
     "browser-sync": "^2.9.1",
     "css-mqpacker": "^4.0.0",
@@ -48,7 +48,7 @@
     "postcss-short": "^0.3.0",
     "postcss-size": "^1.0.0",
     "postcss-svg-fallback": "^1.0.2",
-    "precss": "^0.3.0",
+    "precss": "^1.0.0",
     "rimraf": "^2.4.3"
   }
 }
