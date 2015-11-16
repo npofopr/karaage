@@ -119,3 +119,23 @@ p {
 		content: "bar on medium";
 	}
 }
+
+
+
+@custom-media --small-viewport (max-width: 30em);
+
+@media (--small-viewport) {
+	.npofopr_test_custom_media {
+		width: 10px;
+		height: @width;
+	}
+}
+
+
+.icon {
+    background: url(images/sun-is-shining.svg) no-repeat;
+    background-size: 20px 20px; /* background-size is mandatory */
+}
+
+
+.foo { flex: 1; }

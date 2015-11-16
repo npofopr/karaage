@@ -10,9 +10,7 @@ gulp clean для очистки папки ./build/
 
 gulp build для сборки
 
-npm i --save-dev autoprefixer-core bin-wrapper browser-sync css-mqpacker gulp gulp-bump gulp-copy gulp-filesize gulp-htmlhint gulp-imagemin gulp-jade gulp-newer gulp-notify gulp-postcss gulp-rename gulp-rev-append gulp-rigger gulp-sourcemaps gulp-uglify gulp-uncss gulp-update gulp-util gulp-watch imagemin-gifsicle imagemin-jpegtran imagemin-optipng imagemin-pngquant postcss postcss-center postcss-clearfix postcss-color-short postcss-discard-duplicates postcss-discard-empty postcss-focus postcss-minify-font-weight postcss-nested postcss-pxtorem postcss-short postcss-size postcss-svg-fallback precss rimraf
-
-cssnano cssnext
+npm i --save-dev autoprefixer bin-wrapper browser-sync gulp gulp-bump gulp-copy gulp-filesize gulp-htmlhint gulp-imagemin gulp-jade gulp-newer gulp-notify gulp-postcss gulp-rename gulp-rev-append gulp-rigger gulp-sourcemaps gulp-uglify gulp-uncss gulp-update gulp-util gulp-watch imagemin-gifsicle imagemin-jpegtran imagemin-optipng imagemin-pngquant postcss postcss-center postcss-clearfix postcss-focus postcss-nested postcss-pxtorem precss rimraf cssnext postcss-media-minmax postcss-nested cssnano postcss-easings postcss-font-magician postcss-use postcss-property-lookup postcss-custom-media postcss-svg-fallback postcss-at2x postcss-flexbugs-fixes
 
 ### HTML&CSS
 
@@ -64,72 +62,3 @@ gulp-zip — архивирует папки и файлы.
 
 +gulp-filesize — отображает размеры файлов в удобном для чтения формате.
 
-
-
-
-
-
-{
-  "name": "Gulp-frontend",
-  "version": "3.0.0",
-  "description": "Gulp boilerplate for html+js+css",
-  "author": "Vladislav Altyncev",
-  "repository": {
-	"type": "git",
-	"url": "https://github.com/npofopr/my-gulpfile"
-  },
-  "devDependencies": {
-	"autoprefixer-core": "^5.2.1",
-	"bin-wrapper": "^3.0.2",
-	"browser-sync": "^2.8.2",
-	"css-mqpacker": "^4.0.0",
-	"cssnano": "^2.6.1",
-	"cssnext": "^1.8.4",
-	"gulp": "^3.9.0",
-	"gulp-bump": "^0.3.1",
-	"gulp-copy": "0.0.2",
-	"gulp-csso": "^1.0.0",
-	"gulp-filesize": "0.0.6",
-	"gulp-htmlhint": "^0.3.0",
-	"gulp-imagemin": "^2.3.0",
-	"gulp-jade": "^1.1.0",
-	"gulp-newer": "^0.5.1",
-	"gulp-notify": "^2.2.0",
-	"gulp-postcss": "^6.0.0",
-	"gulp-rename": "^1.2.0",
-	"gulp-rev-append": "^0.1.6",
-	"gulp-rigger": "^0.5.8",
-	"gulp-sourcemaps": "^1.5.2",
-	"gulp-uglify": "^1.4.0",
-	"gulp-uncss": "^1.0.1",
-	"gulp-update": "0.0.2",
-	"gulp-util": "^3.0.6",
-	"gulp-watch": "^4.3.5",
-	"imagemin-gifsicle": "^4.2.0",
-	"imagemin-jpegtran": "^4.3.0",
-	"imagemin-optipng": "^4.3.0",
-	"imagemin-pngquant": "^4.2.0",
-	"postcss": "^5.0.3",
-	"postcss-at2x": "^1.2.0",
-	"postcss-center": "^1.0.0",
-	"postcss-clearfix": "^0.2.0",
-	"postcss-color-short": "^0.2.0",
-	"postcss-discard-comments": "^1.2.1",
-	"postcss-discard-duplicates": "^1.1.5",
-	"postcss-discard-empty": "^1.1.2",
-	"postcss-focus": "^1.0.0",
-	"postcss-import": "^5.2.2",
-	"postcss-media-minmax": "^1.1.0",
-	"postcss-merge-rules": "^1.2.2",
-	"postcss-minify-font-weight": "^1.0.1",
-	"postcss-mixins": "^0.1.1",
-	"postcss-nested": "^1.0.0",
-	"postcss-pxtorem": "^3.0.0",
-	"postcss-short": "^0.3.0",
-	"postcss-simple-vars": "^0.2.4",
-	"postcss-size": "^1.0.0",
-	"postcss-svg-fallback": "^1.0.2",
-	"precss": "^0.3.0",
-	"rimraf": "^2.4.3"
-  }
-}
