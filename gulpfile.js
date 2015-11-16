@@ -8,7 +8,6 @@ var gulp = require('gulp'),
 ===============================*/
 	postcss = require('gulp-postcss'),
 	autoprefixer = require('autoprefixer'),
-//var postcss = require('postcss');
 	precss = require('precss'),
 	center = require('postcss-center'),
 	pxtorem = require('postcss-pxtorem'),
@@ -49,7 +48,6 @@ var gulp = require('gulp'),
 	copy = require('gulp-copy'),
 	size = require('gulp-filesize'),
 	newer = require('gulp-newer'),
-	bump = require('gulp-bump'),
 	gutil = require('gulp-util'),
 	browserSync = require('browser-sync'),
 	pkg = require('./package.json'),
@@ -279,22 +277,6 @@ gulp.task('copystatic', function() {
 	gulp.src(path.src.staticf)
 		.pipe(gulp.dest(path.build.staticf));
 });
-
-
-/*gulp.task('bump', function(){
-  gulp.src('./package.json')
-  .pipe(bump({type:'major', indent: 4 }))
-  .pipe(gulp.dest('./'));
-});
-
-gulp.task('npmUpdate', function() {
-  var update = require('gulp-update')();
-
-  gulp.watch('./package.json').on('change', function (file) {
-	update.write(file);
-  });
-
-})*/
 
 gulp.task('build', [
 	//'hello',
