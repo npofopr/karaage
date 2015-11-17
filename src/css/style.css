@@ -139,3 +139,11 @@ p {
 
 
 .foo { flex: 1; }
+
+
+.postcss-font-variant {
+	font-variant-caps: small-caps;
+}
+.postcss-font-variant table {
+	font-variant-numeric: lining-nums;
+}
