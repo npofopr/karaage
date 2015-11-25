@@ -148,7 +148,7 @@ gulp.task('hello', function () {
 	gutil.log(gutil.colors.black.bgYellow(" |    |  \/    |    \    |   \/    |    \/    |    \    \_\  \|        \ "));
 	gutil.log(gutil.colors.black.bgYellow(" |____|__ \____|__  /____|_  /\____|__  /\____|__  /\______  /_______  / "));
 	gutil.log(gutil.colors.black.bgYellow("         \/       \/       \/         \/         \/        \/        \/  "));
-	gutil.log(gutil.colors.black.bgYellow("             v." + pkg.version + " "));
+	gutil.log(gutil.colors.black.bgYellow("                                                   v." + pkg.version + " "));
 });
 
 gulp.task('build:html', function () {
@@ -196,40 +196,40 @@ gulp.task('build:js', function () {
 
 gulp.task('build:css', function () {
 	var processors = [
-		autoprefixer({
-			browsers: ['last 2 version', 'IE 9']
-		}),
 		precss,
 		at2x,
 		center,
 		pxtorem,
 		clearfix,
 		focus,
-		nested,
-		cssnext,
 		minmax,
+		//nested,
+		easings,
+		fontmagician,
+		fontVariant,
+		postcssLookup,
+		postcssMedia,
+		postcssSVG({
+			paths: ['build/images/svg'],
+		}),
+		svgFallback({
+			basePath: 'src/css',
+			dest: 'build/css',
+			fallbackSelector: '.no-svg',
+			disableConvert: false
+		}),
+		cssnext,
 		cssnano({
-			minifyFontWeight: false,
+			autoprefixer: false,
 			calc: {precision: 2},
 			convertValues: {length: false},
 			discardComments: {removeAll: true},
 			normalizeUrl: true
 		}),
-		easings,
-		fontmagician,
-		postcssSVG({
-			paths: ['src/images/'],
-		}),
-		svgFallback({
-			basePath: 'src/images/', // base path for the images found in the css
-			dest: 'build/images/', // destination for the generated SVGs
-			fallbackSelector: '.no-svg', // selector that gets prefixed to selector
-			disableConvert: false, // when `true` only the css is changed (no new files created)
-		}),
-		postcssLookup,
-		postcssMedia,
 		postcssFixFlex,
-		fontVariant,
+		autoprefixer({
+			browsers: ['> 1%', 'last 2 version', 'IE 9']
+		}),
 	];
 	gulp.src(path.src.css)
 		.pipe(newer(path.build.css))

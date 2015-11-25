@@ -133,7 +133,7 @@ p {
 
 
 .icon {
-    background: url(images/sun-is-shining.svg) no-repeat;
+    background: url(../images/ico-behance.svg) no-repeat;
     background-size: 20px 20px; /* background-size is mandatory */
 }
 
@@ -146,4 +146,17 @@ p {
 }
 .postcss-font-variant table {
 	font-variant-numeric: lining-nums;
+}
+
+
+.icon_auth {
+	display: inline-block;
+	width: 25px;
+	height: 31px;
+	background-image: svg("icon_auth", "[color]: red");
+	background-size: 25px 31px;
+}
+
+.font_family {
+	font-family: Alice;
 }
