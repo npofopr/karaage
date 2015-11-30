@@ -1,18 +1,374 @@
-/* can consume `node_modules`, `web_modules` or local modules
-@import "cssrecipes-defaults"; /* == @import "./node_modules/cssrecipes-defaults/index.css"; */
+/*======================================
+=            precss example            =
+======================================*/
+
+/* Imports */
+/* @import "cssrecipes-defaults"; /* == @import "./node_modules/cssrecipes-defaults/index.css"; */
 @import "_variable.css";
 /*@import "_variable.css" (min-width: 25em);*/
 
+/* Variables */
 $colorfore: #333;
 $colorback: #fff;
 $blue: #056ef0;
 $column: 200px;
 $npofopr_text: yellow;
 
+/* Conditionals */
+.notice--clear {
+    @if 3 < 5 {
+        background: green;
+    }
+    @else {
+        background: blue;
+    }
+}
+
+/* Loops */
+@for $i from 1 to 3 {
+    .b-$i { width: $(i)px; }
+}
+@each $icon in (foo, bar, baz) {
+    .icon-$(icon) {
+        background: url('icons/$(icon).png');
+    }
+}
+
+/* Mixins */
+@define-mixin icon $name {
+    padding-left: 16px;
+
+    &::after {
+        content: "";
+        background-url: url(/icons/$(name).png);
+    }
+}
 @define-mixin reset {
 	padding: 0;
 	margin: 0;
 }
+.search {
+    @mixin icon search;
+}
+
+/* Extends */
+@define-extend bg-green {
+    background: green;
+}
+.notice--clear {
+    @extend bg-green;
+}
+
+/* Property Lookup */
+.heading {
+    margin: 20px;
+    padding: @margin;
+}
+
+/* Root */
+.parent {
+    background: white;
+
+    @at-root{
+        .child {
+            background: black;
+        }
+    }
+}
+
+/*=====  End of precss example  ======*/
+
+/*==============================================
+=            postcss-center example            =
+==============================================*/
+
+.postcss-center {
+	top: center;
+	left: center;
+}
+.postcss-center-top {
+	top: center;
+}
+.postcss-center-left {
+	left: center;
+}
+
+/*=====  End of postcss-center example  ======*/
+
+/*===============================
+=            pxtorem            =
+===============================*/
+
+/* `px` is converted to `rem` */
+.pxtorem-convert {
+    font-size: 16px;
+}
+/* `Px` or `PX` is ignored by `postcss-pxtorem` but still accepted by browsers */
+.pxtorem-convert-ignore {
+    border: 1Px solid;
+    border-width: 2PX;
+}
+
+/*=====  End of pxtorem  ======*/
+
+
+/*================================================
+=            postcss-clearfix example            =
+================================================*/
+
+.postcss-clearfix-foo {
+	clear: fix; /* IE8+ */
+}
+.postcss-clearfix-bar {
+	clear: fix-legacy; /* IE6+ */
+}
+
+/*=====  End of postcss-clearfix example  ======*/
+
+/*=============================================
+=            postcss-focus example            =
+=============================================*/
+
+*:focus {
+	outline: 0;
+}
+.button:hover {
+	background: red;
+}
+
+/*=====  End of postcss-focus example  ======*/
+
+/*==============================================
+=            postcss-nested example            =
+==============================================*/
+
+/* plugin to unwrap nested rules like how Sass does it */
+.phone {
+    &_title {
+        width: 500px;
+        @media (max-width: 500px) {
+            width: auto;
+        }
+        body.is_dark & {
+            color: white;
+        }
+    }
+    img {
+        display: block;
+    }
+}
+
+/*=====  End of postcss-nested example  ======*/
+
+/*============================================
+=            css-mqpacker example            =
+============================================*/
+/* Pack same CSS media query rules into one media query rule. */
+
+.css-mqpacker-foo::before {
+	content: "foo on small";
+}
+@media screen and (min-width: 769px) {
+	.css-mqpacker-foo::before {
+		content: "foo on medium";
+	}
+}
+.css-mqpacker-bar::before {
+	content: "bar on small";
+}
+@media screen and (min-width: 769px) {
+	.css-mqpacker-bar::before {
+		content: "bar on medium";
+	}
+}
+
+/*=====  End of css-mqpacker example  ======*/
+
+/*====================================================
+=            postcss-media-minmax example            =
+====================================================*/
+
+@media screen and (width >= 500px) and (width <= 1200px) {
+	.postcss-media-minmax-bar {
+		display: block;
+	}
+}
+
+@media screen and (500px <= width <= 1200px) {
+	.postcss-media-minmax-bar2 {
+		display: block;
+	}
+}
+/* Or */
+@media screen and (1200px >= width >= 500px) {
+	.postcss-media-minmax-bar3 {
+		display: block;
+	}
+}
+
+/*=====  End of postcss-media-minmax example  ======*/
+
+/*====================================================
+=            postcss-custom-media example            =
+====================================================*/
+
+@custom-media --small-viewport (max-width: 30em);
+
+@media (--small-viewport) {
+	.postcss-custom-media {
+		width: 100%;
+	}
+}
+
+/*=====  End of postcss-custom-media example  ======*/
+
+
+/*===========================================
+=            postcss-svg example            =
+===========================================*/
+
+.postcss-svg {
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	background-image: svg("icon_auth", "[color]: red");
+}
+.postcss-svg-tag-name,
+.postcss-svg-class-name,
+.postcss-svg-color-group,
+.postcss-svg-identifier,
+.postcss-svg-color-index {
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	position: relative;
+}
+.postcss-svg-tag-name {
+	background-image: svg("loupe", "circle[fill]: rgba(105, 200, 250, .2); circle[stroke]: gray; path[stroke]: brown;");
+}
+.postcss-svg-class-name {
+	background-image: svg("loupe", ".glass[fill]: rgba(105, 200, 250, .2);");
+}
+.postcss-svg-color-group {
+	background-image: svg("loupe", "colorGroup0: red; colorGroup1: blue;");
+}
+.postcss-svg-identifier {
+	background-image: svg("loupe", "#rim[fill]: rgba(105, 200, 250, .2); #rim[stroke]: gray; #handle[stroke]: brown;");
+}
+.postcss-svg-color-index {
+	background-image: svg("loupe", "color0: rgba(105, 200, 250, .2); color1: gray; color2: brown;");
+}
+
+/*=====  End of postcss-svg example  ======*/
+
+/*===============================================
+=            postcss-easings example            =
+===============================================*/
+/* plugin to replace easing name from easings.net to cubic-bezier(). */
+
+.snake {
+	transition: all 600ms ease-in-sine;
+}
+.camel {
+	transition: all 600ms easeInSine;
+}
+
+/*=====  End of postcss-easings example  ======*/
+
+/*=====================================================
+=            postcss-font-magician example            =
+=====================================================*/
+
+.postcss-font-magician {
+	font-family: "Alice";
+}
+
+/*=====  End of postcss-font-magician example  ======*/
+
+/*=====================================================
+=            .postcss-svg-fallback example            =
+=====================================================*/
+
+.postcss-svg-fallback-icon {
+	background: url(images/svg/icon_reg.svg) no-repeat;
+	background-size: 33px 33px;
+
+	width: 33px;
+	height: @width;
+}
+/*.postcss-svg-fallback-icon-inline {
+	background: url(data:image/svg+xml; .. svg data ..) no-repeat;
+	background-size: 20px 20px;
+}*/
+
+/*=====  End of .postcss-svg-fallback example  ======*/
+
+/*============================================
+=            postcss-at2x example            =
+============================================*/
+
+.logo {
+	background: red url('../images/logo.png') no-repeat 0 0 at-2x;
+}
+
+/*=====  End of postcss-at2x example  ======*/
+
+/*======================================================
+=            postcss-flexbugs-fixes example            =
+======================================================*/
+
+.postcss-flexbugs-fixes-foo { flex: 1; }
+.postcss-flexbugs-fixes-bar { flex: 1 1; }
+.postcss-flexbugs-fixes-foz { flex: 1 1 0; }
+.postcss-flexbugs-fixes-baz { flex: 1 1 0px; }
+.postcss-flexbugs-fixes-daz { flex: 1 0 calc(1vw - 1px); }
+
+/*=====  End of postcss-flexbugs-fixes example  ======*/
+
+/*====================================================
+=            postcss-font-variant example            =
+====================================================*/
+
+.postcss-font-variant h2 {
+	font-variant-caps: small-caps;
+}
+
+.postcss-font-variant table {
+	font-variant-numeric: lining-nums;
+}
+
+/*=====  End of postcss-font-variant example  ======*/
+
+/*====================================
+=            lost example            =
+====================================*/
+
+.container {
+	lost-utility: clearfix;
+	.col {
+		lost-column: 1/3;
+	}
+}
+
+/*=====  End of lost example  ======*/
+
+/*====================================
+=            postcss-neat            =
+====================================*/
+
+.postcss-neat_container {
+	@neat-outer-container;
+	.postcss-neat_parent-element {
+		@neat-span-columns 8;
+		.postcss-neat_element {
+			@neat-span-columns 6 8;
+		}
+	}
+}
+
+/*=====  End of postcss-neat  ======*/
+
+
 
 .npofopr {
 	color: $npofopr_text;
@@ -45,35 +401,6 @@ main {
 	width: $column;
 }
 
-.phone {
-	&_title {
-		color: red;
-		@media (max-width: 500px) {
-			width: auto;
-		}
-		body.is_dark & {
-			color: white;
-		}
-	}
-	img {
-		display: block;
-	}
-}
-
-.button:hover {
-	background: red;
-}
-
-@media screen and (width >= 500px) and (width <= 1200px) {
-	.bar {
-		display: block;
-	}
-}
-
-.logo {
-	background: red url('../images/logo.png') no-repeat 0 0 at-2x;
-}
-
 h1 {
 	margin: 0 auto;
 	margin: 0 auto;
@@ -98,65 +425,4 @@ a {
 p {
 	color: blue;
 	font-weight: bold;
-}
-
-.foo::before {
-	content: "foo on small";
-}
-
-@media screen and (min-width: 769px) {
-	.foo::before {
-		content: "foo on medium";
-	}
-}
-
-.bar::before {
-	content: "bar on small";
-}
-
-@media screen and (min-width: 769px) {
-	.bar::before {
-		content: "bar on medium";
-	}
-}
-
-
-
-@custom-media --small-viewport (max-width: 30em);
-
-@media (--small-viewport) {
-	.npofopr_test_custom_media {
-		width: 10px;
-		height: @width;
-	}
-}
-
-
-.icon {
-    background: url(../images/ico-behance.svg) no-repeat;
-    background-size: 20px 20px; /* background-size is mandatory */
-}
-
-
-.foo { flex: 1; }
-
-
-.postcss-font-variant {
-	font-variant-caps: small-caps;
-}
-.postcss-font-variant table {
-	font-variant-numeric: lining-nums;
-}
-
-
-.icon_auth {
-	display: inline-block;
-	width: 25px;
-	height: 31px;
-	background-image: svg("icon_auth", "[color]: red");
-	background-size: 25px 31px;
-}
-
-.font_family {
-	font-family: Alice;
 }

@@ -14,20 +14,22 @@ var gulp = require('gulp'),
 	clearfix = require('postcss-clearfix'),
 	focus = require('postcss-focus'),
 	nested = require('postcss-nested'),
-	//mqpacker = require('css-mqpacker'),
+	mqpacker = require('css-mqpacker'),
 	cssnext = require('cssnext'),
 	minmax = require('postcss-media-minmax'),
 	cssnano = require('cssnano'),
 	postcssSVG = require('postcss-svg'),
 	easings = require('postcss-easings'),
 	fontmagician = require('postcss-font-magician'),
-	postcssLookup = require('postcss-property-lookup'),
+	//postcssLookup = require('postcss-property-lookup'), - precss
 	postcssMedia = require('postcss-custom-media'),
 	svgFallback = require('postcss-svg-fallback'),
 	at2x = require('postcss-at2x'),
 	postcssFixFlex = require('postcss-flexbugs-fixes'),
 	fontVariant = require('postcss-font-variant'),
 	//postcssUse = require('postcss-use'),
+	lost = require('lost'),
+	//neat = require('postcss-neat'),
 /*=====  End of PostCSS  ======*/
 
 	sourcemaps = require('gulp-sourcemaps'),
@@ -196,10 +198,20 @@ gulp.task('build:js', function () {
 
 gulp.task('build:css', function () {
 	var processors = [
+		lost,
+		//neat({
+			//neatDefaultDisplay, sets the default display mode. Can be block, table or block-collapse. Default is block.
+			//neatDefaultDirection, sets the default layout direction of the grid. Can be LTR or RTL. Default is LTR.
+			//neatGridColumns, sets the total number of columns in the grid. Default is 12.
+			//neatColumnWidth, sets the relative width of a single grid column. Default is 4.235801032000001em.
+			//neatGutterWidth, sets the relative width of a single grid gutter. Default is 1.618em.
+			//neatMaxWidth, sets the max-width property of the element that includes outer-container. Default is 64em.
+			//debugGridColor, sets the background color for the debugging grid. Default is #ecf0f1.
+			//debugGridLocation, sets the default location of the debugging grid. Default is after.
+		//}),
 		precss,
 		at2x,
 		center,
-		pxtorem,
 		clearfix,
 		focus,
 		minmax,
@@ -207,7 +219,6 @@ gulp.task('build:css', function () {
 		easings,
 		fontmagician,
 		fontVariant,
-		postcssLookup,
 		postcssMedia,
 		postcssSVG({
 			paths: ['build/images/svg'],
@@ -230,6 +241,15 @@ gulp.task('build:css', function () {
 		autoprefixer({
 			browsers: ['> 1%', 'last 2 version', 'IE 9']
 		}),
+		pxtorem({
+			//root_value: 16,
+			//unit_precision: 5,
+			//prop_white_list: ['font', 'font-size', 'line-height', 'letter-spacing'],
+			//selector_black_list: [],
+			replace: true,
+			media_query: false
+		}),
+		mqpacker,
 	];
 	gulp.src(path.src.css)
 		.pipe(newer(path.build.css))
