@@ -362,12 +362,22 @@ $npofopr_text: yellow;
 		@neat-span-columns 8;
 		.postcss-neat_element {
 			@neat-span-columns 6 8;
+			background-color: yellow;
 		}
 	}
 }
 
 /*=====  End of postcss-neat  ======*/
 
+/* ==========================================================================
+   Postcss-animation
+   ========================================================================== */
+
+.postcss-animation {
+    animation-name: bounce;
+}
+
+/*=====  End of Postcss-animation  ======*/
 
 
 .npofopr {

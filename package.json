@@ -8,7 +8,7 @@
     "url": "https://github.com/npofopr/karaage"
   },
   "devDependencies": {
-    "autoprefixer": "^6.1.1",
+    "autoprefixer": "^6.1.2",
     "bin-wrapper": "^3.0.2",
     "browser-sync": "^2.10.0",
     "css-mqpacker": "^4.0.0",
@@ -36,6 +36,7 @@
     "imagemin-pngquant": "^4.2.0",
     "lost": "^6.6.2",
     "postcss": "^5.0.12",
+    "postcss-animation": "0.0.6",
     "postcss-at2x": "^2.0.0",
     "postcss-center": "^1.0.0",
     "postcss-clearfix": "^0.2.0",
@@ -47,7 +48,6 @@
     "postcss-font-variant": "^2.0.0",
     "postcss-media-minmax": "^2.1.1",
     "postcss-neat": "^2.4.2",
-    "postcss-nested": "^1.0.0",
     "postcss-pxtorem": "^3.1.0",
     "postcss-svg": "^1.0.4",
     "postcss-svg-fallback": "^1.2.0",

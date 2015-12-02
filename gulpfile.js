@@ -9,27 +9,26 @@ var gulp = require('gulp'),
 	postcss = require('gulp-postcss'),
 	autoprefixer = require('autoprefixer'),
 	precss = require('precss'),
-	center = require('postcss-center'),
-	pxtorem = require('postcss-pxtorem'),
-	clearfix = require('postcss-clearfix'),
-	focus = require('postcss-focus'),
-	nested = require('postcss-nested'),
+	postcssCenter = require('postcss-center'),
+	postcssPxtorem = require('postcss-pxtorem'),
+	postcssClearfix = require('postcss-clearfix'),
+	postcssFocus = require('postcss-focus'),
 	mqpacker = require('css-mqpacker'),
 	cssnext = require('cssnext'),
-	minmax = require('postcss-media-minmax'),
+	postcssMinmax = require('postcss-media-minmax'),
 	cssnano = require('cssnano'),
 	postcssSVG = require('postcss-svg'),
-	easings = require('postcss-easings'),
-	fontmagician = require('postcss-font-magician'),
-	//postcssLookup = require('postcss-property-lookup'), - precss
+	postcssEasings = require('postcss-easings'),
+	postcssAnimation = require('postcss-animation'),
+	postcssFontmagician = require('postcss-font-magician'),
 	postcssMedia = require('postcss-custom-media'),
-	svgFallback = require('postcss-svg-fallback'),
-	at2x = require('postcss-at2x'),
+	postcssSvgFallback = require('postcss-svg-fallback'),
+	postcssAt2x = require('postcss-at2x'),
 	postcssFixFlex = require('postcss-flexbugs-fixes'),
-	fontVariant = require('postcss-font-variant'),
+	postcssFontVariant = require('postcss-font-variant'),
 	//postcssUse = require('postcss-use'),
-	lost = require('lost'),
-	//neat = require('postcss-neat'),
+	//lost = require('lost'),
+	postcssNeat = require('postcss-neat'),
 /*=====  End of PostCSS  ======*/
 
 	sourcemaps = require('gulp-sourcemaps'),
@@ -198,8 +197,48 @@ gulp.task('build:js', function () {
 
 gulp.task('build:css', function () {
 	var processors = [
-		lost,
-		//neat({
+		autoprefixer({
+			browsers: ['> 1%', 'last 2 version', 'IE 9']
+		}),
+		//lost,
+		precss,
+		cssnext,
+		postcssAt2x,
+		postcssCenter,
+		postcssClearfix,
+		postcssFocus,
+		postcssMinmax,
+		postcssEasings,
+		postcssAnimation,
+		postcssFontmagician,
+		postcssFontVariant,
+		postcssMedia,
+		postcssSVG({
+			paths: ['build/images/svg'],
+		}),
+		postcssSvgFallback({
+			basePath: 'src/css',
+			dest: 'build/css',
+			fallbackSelector: '.no-svg',
+			disableConvert: false
+		}),
+		/*cssnano({
+			autoprefixer: false,
+			calc: {precision: 2},
+			convertValues: {length: false},
+			discardComments: {removeAll: true},
+			normalizeUrl: true
+		}),*/
+		postcssFixFlex,
+		postcssPxtorem({
+			//root_value: 16,
+			//unit_precision: 5,
+			//prop_white_list: ['font', 'font-size', 'line-height', 'letter-spacing'],
+			//selector_black_list: [],
+			replace: true,
+			media_query: false
+		}),
+		postcssNeat({
 			//neatDefaultDisplay, sets the default display mode. Can be block, table or block-collapse. Default is block.
 			//neatDefaultDirection, sets the default layout direction of the grid. Can be LTR or RTL. Default is LTR.
 			//neatGridColumns, sets the total number of columns in the grid. Default is 12.
@@ -208,46 +247,6 @@ gulp.task('build:css', function () {
 			//neatMaxWidth, sets the max-width property of the element that includes outer-container. Default is 64em.
 			//debugGridColor, sets the background color for the debugging grid. Default is #ecf0f1.
 			//debugGridLocation, sets the default location of the debugging grid. Default is after.
-		//}),
-		precss,
-		at2x,
-		center,
-		clearfix,
-		focus,
-		minmax,
-		//nested,
-		easings,
-		fontmagician,
-		fontVariant,
-		postcssMedia,
-		postcssSVG({
-			paths: ['build/images/svg'],
-		}),
-		svgFallback({
-			basePath: 'src/css',
-			dest: 'build/css',
-			fallbackSelector: '.no-svg',
-			disableConvert: false
-		}),
-		cssnext,
-		cssnano({
-			autoprefixer: false,
-			calc: {precision: 2},
-			convertValues: {length: false},
-			discardComments: {removeAll: true},
-			normalizeUrl: true
-		}),
-		postcssFixFlex,
-		autoprefixer({
-			browsers: ['> 1%', 'last 2 version', 'IE 9']
-		}),
-		pxtorem({
-			//root_value: 16,
-			//unit_precision: 5,
-			//prop_white_list: ['font', 'font-size', 'line-height', 'letter-spacing'],
-			//selector_black_list: [],
-			replace: true,
-			media_query: false
 		}),
 		mqpacker,
 	];
