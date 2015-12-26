@@ -223,11 +223,42 @@ $npofopr_text: yellow;
 /*=====  End of postcss-custom-media example  ======*/
 
 
-/*===========================================
-=            postcss-svg example            =
-===========================================*/
+/*===================================================
+=            postcss-inline-svg example            =
+===================================================*/
 
-.postcss-svg {
+@svg-load nav url(../images/svg/icon_auth.svg) {
+    fill: #cfc;
+    path:nth-child(2) {
+        fill: #ff0;
+    }
+}
+.postcss-inline-svg-nav {
+    background: svg-inline(nav);
+}
+
+@svg-load up url(../images/svg/loupe.svg) {
+    #handle {
+        stroke: red;
+    }
+    .glass {
+        stroke: green;
+    }
+}
+.postcss-inline-svg-up {
+    background: svg-inline(up);
+}
+/*.postcss-inline-svg-up {
+    background: svg-load(../images/svg/loupe.svg, "handle[stroke]": #ff0, stroke: #f00);
+}*/
+
+.postcss-inline-svg {
+    width: 30px;
+	height: 30px;
+	display: inline-block;
+}
+
+/*.postcss-svg {
 	width: 30px;
 	height: 30px;
 	display: inline-block;
@@ -257,9 +288,9 @@ $npofopr_text: yellow;
 }
 .postcss-svg-color-index {
 	background-image: svg("loupe", "color0: rgba(105, 200, 250, .2); color1: gray; color2: brown;");
-}
+}*/
 
-/*=====  End of postcss-svg example  ======*/
+/*=====  End of postcss-inline-svg example  ======*/
 
 /*===============================================
 =            postcss-easings example            =
@@ -290,7 +321,7 @@ $npofopr_text: yellow;
 =====================================================*/
 
 .postcss-svg-fallback-icon {
-	background: url(images/svg/icon_reg.svg) no-repeat;
+	background: url(../images/svg/icon_reg.svg) no-repeat;
 	background-size: 33px 33px;
 
 	width: 33px;

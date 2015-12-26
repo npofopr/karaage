@@ -17,7 +17,8 @@ var gulp = require('gulp'),
 	cssnext = require('cssnext'),
 	postcssMinmax = require('postcss-media-minmax'),
 	cssnano = require('cssnano'),
-	postcssSVG = require('postcss-svg'),
+	//postcssSVG = require('postcss-svg'),
+	postcssInlineSVG = require('postcss-inline-svg'),
 	postcssEasings = require('postcss-easings'),
 	postcssAnimation = require('postcss-animation'),
 	postcssFontmagician = require('postcss-font-magician'),
@@ -26,6 +27,7 @@ var gulp = require('gulp'),
 	postcssAt2x = require('postcss-at2x'),
 	postcssFixFlex = require('postcss-flexbugs-fixes'),
 	postcssFontVariant = require('postcss-font-variant'),
+	postcssMixins = require('postcss-mixins'),
 	//postcssUse = require('postcss-use'),
 	//lost = require('lost'),
 	postcssNeat = require('postcss-neat'),
@@ -213,9 +215,7 @@ gulp.task('build:css', function () {
 		postcssFontmagician,
 		postcssFontVariant,
 		postcssMedia,
-		postcssSVG({
-			paths: ['build/images/svg'],
-		}),
+		postcssInlineSVG,
 		postcssSvgFallback({
 			basePath: 'src/css',
 			dest: 'build/css',
@@ -239,14 +239,11 @@ gulp.task('build:css', function () {
 			media_query: false
 		}),
 		postcssNeat({
-			//neatDefaultDisplay, sets the default display mode. Can be block, table or block-collapse. Default is block.
-			//neatDefaultDirection, sets the default layout direction of the grid. Can be LTR or RTL. Default is LTR.
-			//neatGridColumns, sets the total number of columns in the grid. Default is 12.
-			//neatColumnWidth, sets the relative width of a single grid column. Default is 4.235801032000001em.
-			//neatGutterWidth, sets the relative width of a single grid gutter. Default is 1.618em.
-			//neatMaxWidth, sets the max-width property of the element that includes outer-container. Default is 64em.
-			//debugGridColor, sets the background color for the debugging grid. Default is #ecf0f1.
-			//debugGridLocation, sets the default location of the debugging grid. Default is after.
+			neatGridColumns: '12',
+			//neatColumnWidth: '4.16em',
+			neatGutterWidth: '1.338em', //20px
+			neatMaxWidth: '85em',
+			debugGridColor: '#ecf0f1'
 		}),
 		mqpacker,
 	];
