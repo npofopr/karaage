@@ -16,10 +16,9 @@ The MIT License, see the included [License.md](License.md) file.
 
 ## Packages
 
-npm i --save-dev autoprefixer bin-wrapper browser-sync css-mqpacker cssnano cssnext gulp gulp-copy gulp-filesize gulp-htmlhint gulp-imagemin gulp-jade gulp-newer gulp-notify gulp-postcss gulp-rename gulp-rev-append gulp-rigger gulp-sourcemaps gulp-uglify gulp-uncss gulp-util gulp-watch imagemin-gifsicle imagemin-jpegtran imagemin-pngquant lost postcss postcss-advanced-variables postcss-at2x postcss-center postcss-clearfix postcss-custom-media postcss-easings postcss-flexbugs-fixes postcss-focus postcss-font-magician postcss-font-variant postcss-media-minmax postcss-neat postcss-pxtorem postcss-svg postcss-svg-fallback postcss-use postcss-value-parser precss rimraf
+npm i --save-dev autoprefixer bin-wrapper browser-sync css-mqpacker cssnano cssnext gulp gulp-copy gulp-filesize gulp-htmlhint gulp-imagemin gulp-jade gulp-newer gulp-notify gulp-postcss gulp-rename gulp-rev-append gulp-rigger gulp-sourcemaps gulp-uglify gulp-uncss gulp-util gulp-watch imagemin-gifsicle imagemin-jpegtran imagemin-pngquant lost postcss postcss-animation postcss-at2x postcss-center postcss-clearfix postcss-custom-media postcss-easings postcss-flexbugs-fixes postcss-focus postcss-font-magician postcss-font-variant postcss-inline-svg postcss-media-minmax postcss-mixins postcss-neat postcss-pxtorem postcss-svg-fallback postcss-use precss rimraf
 
 ### windows error
 
-	MSBUILD : error MSB3411: Could not load the Visual C++ component "VCBuild.exe". If the component is  not installed, either 1) install the Microsoft Windows SDK for Windows Server 2008 and .NET Framew ork 3.5, or 2) install Microsoft Visual Studio 2008. 
-
-	gyp ERR! stack Error: `C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe` failed with exit code: 1
+	\node_modules\bufferutil\build\bufferutil.vcxproj(20,3): error
+	MSB4019: импортированный проект "D:\Microsoft.Cpp.Default.props" не обнаружен. Проверьте путь в объ явлении <Import> и наличие файла на диске.
