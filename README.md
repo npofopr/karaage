@@ -16,7 +16,7 @@ The MIT License, see the included [License.md](License.md) file.
 
 ## Packages
 
-npm i --save-dev autoprefixer bin-wrapper browser-sync css-mqpacker cssnano cssnext gulp gulp-copy gulp-filesize gulp-htmlhint gulp-imagemin gulp-jade gulp-newer gulp-notify gulp-postcss gulp-rename gulp-rev-append gulp-rigger gulp-sourcemaps gulp-uglify gulp-uncss gulp-util gulp-watch imagemin-gifsicle imagemin-jpegtran imagemin-pngquant lost postcss postcss-animation postcss-at2x postcss-center postcss-clearfix postcss-custom-media postcss-easings postcss-flexbugs-fixes postcss-focus postcss-font-magician postcss-font-variant postcss-inline-svg postcss-media-minmax postcss-mixins postcss-neat postcss-pxtorem postcss-svg-fallback postcss-use precss rimraf
+npm i --save-dev autoprefixer bin-wrapper browser-sync css-mqpacker cssnano gulp gulp-copy gulp-filesize gulp-htmlhint gulp-imagemin gulp-jade gulp-newer gulp-notify gulp-postcss gulp-rename gulp-rev-append gulp-rigger gulp-sourcemaps gulp-uglify gulp-uncss gulp-util gulp-watch imagemin-gifsicle imagemin-jpegtran imagemin-pngquant lost postcss postcss-animation postcss-at2x postcss-center postcss-clearfix postcss-color-alpha postcss-cssnext postcss-custom-media postcss-easings postcss-flexbugs-fixes postcss-focus postcss-font-magician postcss-font-variant postcss-inline-svg postcss-media-minmax postcss-mixins postcss-neat postcss-pxtorem postcss-svg-fallback postcss-use precss rimraf
 
 ### windows error
 

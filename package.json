@@ -40,6 +40,8 @@
     "postcss-at2x": "^2.0.0",
     "postcss-center": "^1.0.0",
     "postcss-clearfix": "^0.2.0",
+    "postcss-color-alpha": "^1.0.3",
+    "postcss-cssnext": "^2.4.0",
     "postcss-custom-media": "^5.0.0",
     "postcss-easings": "^0.3.0",
     "postcss-flexbugs-fixes": "^2.0.0",

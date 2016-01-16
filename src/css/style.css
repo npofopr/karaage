@@ -411,6 +411,18 @@ $npofopr_text: yellow;
 /*=====  End of Postcss-animation  ======*/
 
 
+/* ==========================================================================
+   Postcss-color-alpha
+   ========================================================================== */
+.postcss-color-alpha-foo { color: black(.1) }
+.postcss-color-alpha-bar { color: white(0.2); }
+.postcss-color-alpha-baz { color: #0fc.3; }
+.postcss-color-alpha-woo { color: #00ffcc.45; }
+.postcss-color-alpha-hoo { border-color: #000 #000.5 white white(0.5); }
+.postcss-color-alpha-boo { text-shadow: 1px 1px 1px #0fc.1, 3px 3px 5px rgba(#fff, .5); }
+
+
+
 .npofopr {
 	color: $npofopr_text;
 	background: red;
