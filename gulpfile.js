@@ -56,6 +56,7 @@ var gulp = require('gulp'),
 	newer = require('gulp-newer'),
 	gutil = require('gulp-util'),
 	browserSync = require('browser-sync').create(),
+	htmlInjector = require('bs-html-injector'),
 	pkg = require('./package.json');
 	//reload = browserSync.reload;
 
@@ -143,8 +144,7 @@ gulp.task('html', function () {
 		.pipe(htmlhint('.htmlhintrc'))
 		.pipe(htmlhint.reporter())
 		.pipe(rev())
-		.pipe(gulp.dest(path.build.html))
-		.pipe(browserSync.stream());
+		.pipe(gulp.dest(path.build.html));
 		//.pipe(reload({stream: true}));
 		//.pipe(size())
 		//.pipe(notifier('Html Compiled'));
@@ -159,8 +159,7 @@ gulp.task('jade', function () {
 		.pipe(htmlhint('.htmlhintrc'))
 		.pipe(htmlhint.reporter())
 		.pipe(rev())
-		.pipe(gulp.dest(path.build.jade))
-		.pipe(browserSync.stream());
+		.pipe(gulp.dest(path.build.jade));
 		//.pipe(reload({stream: true}));
 		//.pipe(size())
 		//.pipe(notifier('Jade Compiled'));
@@ -322,6 +321,9 @@ gulp.task('build', [
 ]);
 
 gulp.task('browser-sync', function () {
+	browserSync.use(htmlInjector, {
+	    files: "build/*.html"
+	});
 	browserSync.init({
 		server: {
 			baseDir: "./build"
@@ -338,8 +340,8 @@ gulp.task('browser-sync', function () {
 		open: true
     });
 
-	gulp.watch([path.src.html], ["html"]);
-	gulp.watch([path.src.jade], ["jade"]);
+	gulp.watch([path.src.html], ["html"], htmlInjector);
+	gulp.watch([path.src.jade], ["jade"], htmlInjector);
 	gulp.watch([path.src.css], ["css"]);
 	gulp.watch([path.src.js], ["js"]).on('change', browserSync.reload);
 	gulp.watch([path.src.img], ["image"]).on('change', browserSync.reload);
