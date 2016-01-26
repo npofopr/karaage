@@ -423,6 +423,31 @@ $npofopr_text: yellow;
 
 
 
+/* ==========================================================================
+   Postcss-sprites
+   ========================================================================== */
+.postcss-sprite-icon {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin: 30px;
+    border: 1px solid red;
+}
+.postcss-sprite-comment {
+    background: url(../images/sprite/icon-oil_pump_jack.png) no-repeat 0 0;
+    &:hover {
+        background: url(../images/sprite/icon-oil_pump_jack-active.png) no-repeat 0 0;
+    }
+}
+.postcss-sprite-bubble {
+    background: url(../images/sprite/icon-oil_rig.png) no-repeat 0 0;
+    &:hover {
+        background: url(../images/sprite/icon-oil_rig-active.png) no-repeat 0 0;
+    }
+}
+
+
+
 .npofopr {
 	color: $npofopr_text;
 	background: red;
