@@ -504,3 +504,41 @@ p {
 	color: blue;
 	font-weight: bold;
 }
+
+
+/*
+@styleguide
+
+# I love Twitter Bootstrap
+
+Use the button classes on an `<a>`, `<button>`, `<input>` element.
+
+<button class="styleguide-btn">Button</button>
+
+    <button class="styleguide-btn">Button</button>
+
+*/
+.styleguide-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.styleguide-btn:hover,
+.styleguide-btn:focus,
+.styleguide-btn.focus {
+    color: #333;
+    text-decoration: none;
+}

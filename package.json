@@ -54,6 +54,7 @@
     "postcss-neat": "^2.4.2",
     "postcss-pxtorem": "^3.3.1",
     "postcss-sprites": "^3.0.3",
+    "postcss-style-guide": "^0.10.1",
     "postcss-svg-fallback": "^1.2.3",
     "postcss-use": "^2.0.2",
     "precss": "^1.4.0",

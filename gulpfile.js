@@ -33,6 +33,7 @@ var gulp = require('gulp'),
 	postcssNeat = require('postcss-neat'),
 	postcssColor = require('postcss-color-alpha'),
 	postcssSprites = require('postcss-sprites').default,
+	postcssStyleGuide = require('postcss-style-guide'),
 /*=====  End of PostCSS  ======*/
 
 	sourcemaps = require('gulp-sourcemaps'),
@@ -251,6 +252,14 @@ gulp.task('css', function () {
 			debugGridColor: '#ecf0f1'
 		}),
 		mqpacker,
+		postcssStyleGuide({
+			//src: The path to the source CSS file.
+			dest: "./build/styleguide/index.html",
+			project: "Karaage",
+			//showCode: The flag to show CSS code (default: true)
+			//theme: Theme name. (default: psg-theme-default)
+			//themePath: The path to theme file. (default: node_modules/psg-theme-default)
+		}),
 	];
 	gulp.src(path.src.css)
 		.pipe(newer(path.build.css))
