@@ -7,14 +7,17 @@
     "type": "git",
     "url": "https://github.com/npofopr/karaage"
   },
+  "scripts": {
+    "gulp": "./node_modules/.bin/gulp"
+  },
   "devDependencies": {
-    "autoprefixer": "^6.3.1",
+    "autoprefixer": "^6.3.3",
     "bin-wrapper": "^3.0.2",
     "browser-sync": "^2.11.1",
     "bs-html-injector": "^3.0.0",
     "css-mqpacker": "^4.0.0",
-    "cssnano": "^3.4.0",
-    "gulp": "^3.9.1",
+    "cssnano": "^3.5.2",
+    "gulp": "github:gulpjs/gulp#4.0",
     "gulp-copy": "0.0.2",
     "gulp-filesize": "0.0.6",
     "gulp-htmlhint": "^0.3.1",
