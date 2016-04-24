@@ -53,7 +53,7 @@ var paths = {
 		img: 'public/images/',
 		fonts: 'public/',
 		csspartials: 'public/css/libs/',
-		jspartials: 'public',
+		jspartials: 'public/js/libs/',
 		static: 'public'
 	},
 	src: {
@@ -93,21 +93,33 @@ gulp.task('clean', function() {
 
 gulp.task('fonts', function() {
 	return gulp.src(paths.src.fonts, {since: gulp.lastRun('fonts'), base: 'src'})
-		.pipe(newer(paths.public.fonts))
-		.pipe(debug({title: 'fonts'}))
+		.pipe(cached('fonts'))
+		.pipe(plumber({
+			errorHandler: notify.onError(err => ({
+				title: 'Fonts',
+				message: err.message
+			}))
+		}))
+		.pipe(remember('fonts'))
 		.pipe(gulp.dest(paths.public.fonts));
 });
 
 gulp.task('static', function() {
 	return gulp.src(paths.src.static, {since: gulp.lastRun('static'), base: 'src/static'})
-		.pipe(newer(paths.public.static))
-		.pipe(debug({title: 'static'}))
+		.pipe(cached('static'))
+		.pipe(plumber({
+			errorHandler: notify.onError(err => ({
+				title: 'Static',
+				message: err.message
+			}))
+		}))
+		.pipe(remember('static'))
 		.pipe(gulp.dest(paths.public.static));
 });
 
 gulp.task('jade', function() {
 	return gulp.src(paths.src.jade, {since: gulp.lastRun('jade'), base: 'src'})
-		.pipe(newer(paths.public.jade))
+		.pipe(cached('jade'))
 		.pipe(plumber({
 			errorHandler: notify.onError(err => ({
 				title: 'Jade',
@@ -115,6 +127,7 @@ gulp.task('jade', function() {
 			}))
 		}))
 		.pipe(jade({ pretty: true }))
+		.pipe(remember('jade'))
 		.pipe(gulp.dest(paths.public.jade));
 });
 
@@ -156,31 +169,61 @@ gulp.task('postcss', function() {
 
 gulp.task('jsindex', function () {
 	return gulp.src(paths.src.jsindex, {since: gulp.lastRun('jsindex'), base: 'src'})
+		.pipe(cached('jsindex'))
 		//.pipe(newer(path.public.jsindex))
 		// .pipe(sourcemaps.init())
 		// .pipe(sourcemaps.write())
 		// .pipe(gulp.dest(paths.public.js))
 		// .pipe(uglify())
 		// .pipe(rename("index.min.js"))
-		.pipe(debug({title: 'JS index'}))
+		.pipe(plumber({
+			errorHandler: notify.onError(err => ({
+				title: 'JS index',
+				message: err.message
+			}))
+		}))
+		.pipe(remember('jsindex'))
 		.pipe(gulp.dest(paths.public.jsindex));
 });
 
-gulp.task('style', function() {
-	return gulp.src(paths.src.csspartials, {since: gulp.lastRun('style'), base: 'src'})
-		.pipe(cached('style'))
+gulp.task('csscopy', function() {
+	return gulp.src(paths.src.csspartials, {since: gulp.lastRun('csscopy'), base: 'src'})
+		.pipe(cached('csscopy'))
 		// .pipe(gulpIf(isDevelopment, sourcemaps.init()))
 		// .pipe(style())
 		// .pipe(gulpIf(isDevelopment, sourcemaps.write()))
-		.pipe(remember('style'))
+		.pipe(plumber({
+			errorHandler: notify.onError(err => ({
+				title: 'Style copy',
+				message: err.message
+			}))
+		}))
+		.pipe(remember('csscopy'))
 		.pipe(concat('all.css'))
 		.pipe(gulp.dest(paths.public.csspartials));
+});
+
+gulp.task('jscopy', function() {
+	return gulp.src(paths.src.jspartials, {since: gulp.lastRun('jscopy'), base: 'src'})
+		.pipe(cached('jscopy'))
+		.pipe(plumber({
+			errorHandler: notify.onError(err => ({
+				title: 'JS copy',
+				message: err.message
+			}))
+		}))
+		// .pipe(gulpIf(isDevelopment, sourcemaps.init()))
+		// .pipe(style())
+		// .pipe(gulpIf(isDevelopment, sourcemaps.write()))
+		.pipe(remember('jscopy'))
+		.pipe(concat('all.js'))
+		.pipe(gulp.dest(paths.public.jspartials));
 });
 
 
 gulp.task('build', gulp.series(
 	'clean',
-	gulp.parallel('jade', 'stylus', 'postcss', 'jsindex', 'style', 'fonts', 'static'))
+	gulp.parallel('jade', 'stylus', 'postcss', 'jsindex', 'csscopy', 'jscopy', 'fonts', 'static'))
 );
 
 gulp.task('watch', function() {
@@ -204,9 +247,14 @@ gulp.task('watch', function() {
 		delete cached.caches.jsindex[path.resolve(filepath)];
 	});
 
-	gulp.watch(paths.src.csspartials, gulp.series('style')).on('unlink', function(filepath) {
-		remember.forget('style', path.resolve(filepath));
-		delete cached.caches.style[path.resolve(filepath)];
+	gulp.watch(paths.src.csspartials, gulp.series('csscopy')).on('unlink', function(filepath) {
+		remember.forget('csscopy', path.resolve(filepath));
+		delete cached.caches.csscopy[path.resolve(filepath)];
+	});
+
+	gulp.watch(paths.src.jspartials, gulp.series('jscopy')).on('unlink', function(filepath) {
+		remember.forget('jscopy', path.resolve(filepath));
+		delete cached.caches.jscopy[path.resolve(filepath)];
 	});
 
 	gulp.watch(path.src.fonts, gulp.series('fonts')).on('unlink', function(filepath) {
