@@ -6,6 +6,12 @@ const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 
 const jade = require('gulp-jade');
+
+const imagemin = require('gulp-imagemin');
+const pngquant = require('imagemin-pngquant');
+const jpegtran = require('imagemin-jpegtran');
+const gifsicle = require('imagemin-gifsicle');
+
 const stylus = require('gulp-stylus');
 const concat = require('gulp-concat');
 const sourcemaps = require('gulp-sourcemaps');
@@ -18,6 +24,7 @@ const notify = require('gulp-notify');
 const plumber = require('gulp-plumber');
 const uglify = require('gulp-uglify');
 const rename = require('gulp-rename');
+const gutil = require('gulp-util');
 const del = require('del');
 const path = require('path');
 const browserSync = require('browser-sync').create();
@@ -37,7 +44,7 @@ var paths = {
 		css: 'build/css/',
 		postcss: 'build',
 		stylus: 'build/css/',
-		img: 'build/images/',
+		img: 'build',
 		fonts: 'build/fonts/',
 		csspartials: 'build/css/libs/',
 		jspartials: 'build/js/libs/',
@@ -50,7 +57,7 @@ var paths = {
 		css: 'public',
 		postcss: 'public',
 		stylus: 'public',
-		img: 'public/images/',
+		img: 'public',
 		fonts: 'public/',
 		csspartials: 'public/css/libs/',
 		jspartials: 'public/js/libs/',
@@ -186,6 +193,28 @@ gulp.task('jsindex', function () {
 		.pipe(gulp.dest(paths.public.jsindex));
 });
 
+gulp.task('image', function () {
+	return gulp.src(paths.src.img, {since: gulp.lastRun('image'), base: 'src'})
+		.pipe(cached('image'))
+		.pipe(plumber({
+			errorHandler: notify.onError(err => ({
+				title: 'Images',
+				message: err.message
+			}))
+		}))
+		.pipe(imagemin({
+			progressive: true,
+			svgoPlugins: [{removeViewBox: false}],
+			use: [pngquant(), jpegtran(), gifsicle()],
+			interlaced: true
+		}))
+		.pipe(remember('csscopy'))
+		.pipe(gulp.dest(paths.public.img));
+		//.pipe(reload({stream: true}))
+		//.pipe(size());
+		//.pipe(notifier('Images Minify'));
+});
+
 gulp.task('csscopy', function() {
 	return gulp.src(paths.src.csspartials, {since: gulp.lastRun('csscopy'), base: 'src'})
 		.pipe(cached('csscopy'))
@@ -223,7 +252,7 @@ gulp.task('jscopy', function() {
 
 gulp.task('build', gulp.series(
 	'clean',
-	gulp.parallel('jade', 'stylus', 'postcss', 'jsindex', 'csscopy', 'jscopy', 'fonts', 'static'))
+	gulp.parallel('jade', 'stylus', 'postcss', 'jsindex', 'image', 'csscopy', 'jscopy', 'fonts', 'static'))
 );
 
 gulp.task('watch', function() {
@@ -245,6 +274,11 @@ gulp.task('watch', function() {
 	gulp.watch(paths.src.jsindex, gulp.series('jsindex')).on('unlink', function(filepath) {
 		remember.forget('jsindex', path.resolve(filepath));
 		delete cached.caches.jsindex[path.resolve(filepath)];
+	});
+
+	gulp.watch(paths.src.img, gulp.series('image')).on('unlink', function(filepath) {
+		remember.forget('image', path.resolve(filepath));
+		delete cached.caches.image[path.resolve(filepath)];
 	});
 
 	gulp.watch(paths.src.csspartials, gulp.series('csscopy')).on('unlink', function(filepath) {
