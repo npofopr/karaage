@@ -11,6 +11,18 @@
     "gulp": "./node_modules/.bin/gulp"
   },
   "devDependencies": {
-    "gulp": "github:gulpjs/gulp#4.0"
+    "browser-sync": "^2.12.3",
+    "del": "^2.2.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-cached": "^1.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-debug": "^2.1.2",
+    "gulp-if": "^2.0.0",
+    "gulp-jade": "^1.1.0",
+    "gulp-newer": "^1.1.0",
+    "gulp-remember": "^0.3.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-stylus": "^2.3.1",
+    "path": "^0.12.7"
   }
 }

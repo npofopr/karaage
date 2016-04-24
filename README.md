@@ -27,6 +27,8 @@ npm i --save-dev lost postcss postcss-animation postcss-at2x postcss-center post
 
 
 
+NODE_ENV=production gulp
+
 export PATH=./node_modules/.bin/:$PATH
 export PATH=./node_modules/.bin:../node_modules/.bin:../../node_modules/.bin:$PATH
 
