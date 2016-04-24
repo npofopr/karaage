@@ -10,6 +10,8 @@ const newer = require('gulp-newer');
 const debug = require('gulp-debug');
 const remember = require('gulp-remember');
 const cached = require('gulp-cached');
+const notify = require('gulp-notify');
+const plumber = require('gulp-plumber');
 const del = require('del');
 const path = require('path');
 const browserSync = require('browser-sync').create();
@@ -61,18 +63,6 @@ var paths = {
 		jspartials: 'src/js/libs/**/*.*',
 		staticf: 'src/static/**/*.*'
 	},
-	watch: {
-		html: 'src/**/*.html',
-		jade: 'src/**/*.jade',
-		js: 'src/js/**/*.js',
-		css: 'src/css/**/*.css',
-		stylus: 'src/css/style.styl',
-		img: 'src/images/**/*.*',
-		fonts: 'src/fonts/**/*.*',
-		csspartials: 'src/css/libs/**/*.*',
-		jspartials: 'src/js/libs/**/*.*',
-		staticf: 'src/static/**/*.*'
-	},
 	clean: 'public'
 };
 
@@ -117,6 +107,12 @@ gulp.task('jade', function() {
 
 gulp.task('stylus', function() {
 	return gulp.src(paths.src.stylus, {since: gulp.lastRun('stylus'), base: './src'})
+		.pipe(plumber({
+			errorHandler: notify.onError(err => ({
+				title: 'Styles',
+				message: err.message
+			}))
+		}))
 		.pipe(gulpIf(isDevelopment, sourcemaps.init()))
 		.pipe(stylus())
 		.pipe(gulpIf(isDevelopment, sourcemaps.write()))

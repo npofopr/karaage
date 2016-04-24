@@ -20,6 +20,8 @@
     "gulp-if": "^2.0.0",
     "gulp-jade": "^1.1.0",
     "gulp-newer": "^1.1.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.1.0",
     "gulp-remember": "^0.3.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-stylus": "^2.3.1",
