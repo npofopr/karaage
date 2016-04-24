@@ -3,6 +3,4 @@
  */
 
 
-//= libs/helper.js
-
 /* test */
