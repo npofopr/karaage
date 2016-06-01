@@ -122,7 +122,7 @@ var configPrettify = {
 
 gulp.task('browser-sync', ['css', 'js', 'jade'], function () {
 	browserSync.use(htmlInjector, {
-	    files: "build/*.html"
+		files: "build/*.html"
 	});
 	browserSync.init({
 		server: {
@@ -138,7 +138,7 @@ gulp.task('browser-sync', ['css', 'js', 'jade'], function () {
 		//ghostMode: false,
 		//online: false,
 		//open: true
-    });
+	});
 });
 
 gulp.task('clean', function (cb) {
@@ -208,20 +208,20 @@ gulp.task('css', function () {
 			basePath: './src/images/sprite/',
 			//spritesmith.padding: '10',
 			filterBy: function(image) {
-		        // Allow only png files
-		        if (!/\.png$/.test(image.url)) {
-		            return Promise.reject();
-		        }
+				// Allow only png files
+				if (!/\.png$/.test(image.url)) {
+					return Promise.reject();
+				}
 
-		        return Promise.resolve();
-		    }
+				return Promise.resolve();
+			}
 			// filterBy: function(image) {
-		    //     // Allow only png files
-		    //     if (/^icon/.test(image.url.replace(/^.*[\\\/]/, ''))) {
-		    //         return Promise.reject();
-		    //     }
-		    //     return Promise.resolve();
-		    // }
+			//     // Allow only png files
+			//     if (/^icon/.test(image.url.replace(/^.*[\\\/]/, ''))) {
+			//         return Promise.reject();
+			//     }
+			//     return Promise.resolve();
+			// }
 		}),
 		autoprefixer({
 			browsers: ['> 1%', 'last 2 version', 'IE 9']

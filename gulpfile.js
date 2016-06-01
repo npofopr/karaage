@@ -3,9 +3,28 @@
 const gulp = require('gulp');
 
 const postcss = require('gulp-postcss');
-const autoprefixer = require('autoprefixer');
+const cssnano = require('gulp-cssnano');
+const assets  = require('postcss-assets');
+const cssnext = require('postcss-cssnext');
+const precss = require('precss');
+const postcssInlineSVG = require('postcss-inline-svg');
+const postcssShort = require('postcss-short');
+const postcssCenter = require('postcss-center');
+const postcssPxtorem = require('postcss-pxtorem');
+const postcssClearfix = require('postcss-clearfix');
+const postcssFocus = require('postcss-focus');
+const mqpacker = require('css-mqpacker');
+const postcssEasings = require('postcss-easings');
+const postcssAnimation = require('postcss-animation');
+const postcssFontmagician = require('postcss-font-magician');
+const postcssFixFlex = require('postcss-flexbugs-fixes');
+const postcssSprites = require('postcss-sprites').default;
+const postcssNeat = require('postcss-neat');
+//const lost = require('lost');
 
-const jade = require('gulp-jade');
+const pug = require('gulp-pug');
+const htmlhint = require('gulp-htmlhint');
+const rigger = require('gulp-rigger');
 
 const imagemin = require('gulp-imagemin');
 const pngquant = require('imagemin-pngquant');
@@ -27,7 +46,10 @@ const rename = require('gulp-rename');
 const gutil = require('gulp-util');
 const del = require('del');
 const path = require('path');
+const rev = require('gulp-rev');
+const combiner2 = require('stream-combiner2');
 const browserSync = require('browser-sync').create();
+const htmlInjector = require('bs-html-injector');
 
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
@@ -39,7 +61,7 @@ var basePaths = {
 var paths = {
 	build: {
 		html: 'build',
-		jade: 'build',
+		pug: 'build',
 		jsindex: 'build',
 		css: 'build/css/',
 		postcss: 'build',
@@ -52,7 +74,7 @@ var paths = {
 	},
 	public: {
 		html: 'public',
-		jade: 'public',
+		pug: 'public',
 		jsindex: 'public',
 		css: 'public',
 		postcss: 'public',
@@ -65,9 +87,9 @@ var paths = {
 	},
 	src: {
 		html: 'src/*.html',
-		jade: [
-			'src/*.jade',
-			'!src/_*.jade'
+		pug: [
+			'src/*.pug',
+			'!src/_*.pug'
 		],
 		jsindex: 'src/js/index.js',
 		css: 'src/css/style.css',
@@ -82,17 +104,29 @@ var paths = {
 	clean: 'public'
 };
 
-
-gulp.task('serve', function () {
-	// browserSync.use(htmlInjector, {
-	// 	files: "build/*.html"
-	// });
-	browserSync.init({
-		server: 'public',
-	});
-});
-
-browserSync.watch('public/**/*.*').on('change', browserSync.reload);
+var configPrettify = {
+	"indent_size": 4,
+	"indent_char": " ",
+	"eol": "\n",
+	"indent_level": 0,
+	"indent_with_tabs": true,
+	"indent-inner-html": true,
+	"preserve_newlines": true,
+	"max_preserve_newlines": 10,
+	"jslint_happy": false,
+	"space_after_anon_function": false,
+	"brace_style": "collapse",
+	"keep_array_indentation": false,
+	"keep_function_indentation": false,
+	"space_before_conditional": true,
+	"break_chained_methods": false,
+	"eval_code": false,
+	"unescape_strings": false,
+	"wrap_line_length": 0,
+	"wrap_attributes": "auto",
+	"wrap_attributes_indent_size": 4,
+	"end_with_newline": false
+};
 
 gulp.task('clean', function() {
 	return del('public');
@@ -124,18 +158,39 @@ gulp.task('static', function() {
 		.pipe(gulp.dest(paths.public.static));
 });
 
-gulp.task('jade', function() {
-	return gulp.src(paths.src.jade, {since: gulp.lastRun('jade'), base: 'src'})
-		.pipe(cached('jade'))
+gulp.task('html', function() {
+	return gulp.src(paths.src.html, {since: gulp.lastRun('html'), base: 'src'})
+		.pipe(cached('html'))
 		.pipe(plumber({
 			errorHandler: notify.onError(err => ({
-				title: 'Jade',
+				title: 'Html',
 				message: err.message
 			}))
 		}))
-		.pipe(jade({ pretty: true }))
-		.pipe(remember('jade'))
-		.pipe(gulp.dest(paths.public.jade));
+		.pipe(rigger())
+		.pipe(htmlhint('.htmlhintrc'))
+		.pipe(htmlhint.reporter())
+		//.pipe(rev())
+		.pipe(remember('html'))
+		.pipe(gulp.dest(paths.public.html));
+});
+
+gulp.task('pug', function() {
+	return gulp.src(paths.src.pug, {since: gulp.lastRun('pug'), base: 'src'})
+		.pipe(cached('pug'))
+		.pipe(plumber({
+			errorHandler: notify.onError(err => ({
+				title: 'pug',
+				message: err.message
+			}))
+		}))
+		.pipe(pug({ pretty: true }))
+		.pipe(remember('pug'))
+		.pipe(gulp.dest(paths.public.pug))
+		.pipe(htmlhint('.htmlhintrc'))
+		.pipe(htmlhint.reporter())
+		.pipe(gulp.dest(paths.public.pug))
+
 });
 
 gulp.task('stylus', function() {
@@ -155,9 +210,58 @@ gulp.task('stylus', function() {
 
 gulp.task('postcss', function() {
 	var processors = [
-		autoprefixer({
+		postcssSprites({
+			stylesheetPath: './public/css/',
+			spritePath: './public/images/',
+			basePath: './src/images/sprite/',
+			//spritesmith.padding: '10',
+			filterBy: function(image) {
+			// Allow only png files
+			if (!/\.png$/.test(image.url)) {
+				return Promise.reject();
+			}
+				return Promise.resolve();
+			}
+			// filterBy: function(image) {
+			//     // Allow only png files
+			//     if (/^icon/.test(image.url.replace(/^.*[\\\/]/, ''))) {
+			//         return Promise.reject();
+			//     }
+			//     return Promise.resolve();
+			// }
+		}),
+		precss,
+		assets({
+			loadPaths: ['**']
+		}),
+		cssnext({
 			browsers: ['> 1%', 'last 2 version', 'IE 9']
-		})
+		}),
+		postcssShort,
+		postcssCenter,
+		postcssClearfix,
+		postcssFocus,
+		postcssEasings,
+		postcssAnimation,
+		postcssFontmagician,
+		postcssInlineSVG,
+		postcssFixFlex,
+		postcssPxtorem({
+			//root_value: 16,
+			//unit_precision: 5,
+			//prop_white_list: ['font', 'font-size', 'line-height', 'letter-spacing'],
+			//selector_black_list: [],
+			replace: true,
+			media_query: false
+		}),
+		postcssNeat({
+			neatGridColumns: '12',
+			//neatColumnWidth: '4.16em',
+			neatGutterWidth: '1.338em', //20px
+			neatMaxWidth: '85em',
+			debugGridColor: '#ecf0f1'
+		}),
+		mqpacker
 	];
 	return gulp.src(paths.src.postcss, {since: gulp.lastRun('postcss'), base: 'src'})
 		.pipe(cached('style'))
@@ -171,6 +275,7 @@ gulp.task('postcss', function() {
 		.pipe(postcss(processors))
 		.pipe(gulpIf(isDevelopment, sourcemaps.write()))
 		.pipe(remember('postcss'))
+		.pipe(gulpIf(!isDevelopment, cssnano()))
 		.pipe(gulp.dest(paths.public.postcss));
 });
 
@@ -252,13 +357,18 @@ gulp.task('jscopy', function() {
 
 gulp.task('build', gulp.series(
 	'clean',
-	gulp.parallel('jade', 'stylus', 'postcss', 'jsindex', 'image', 'csscopy', 'jscopy', 'fonts', 'static'))
+	gulp.parallel('html', 'pug', 'stylus', 'postcss', 'jsindex', 'image', 'csscopy', 'jscopy', 'fonts', 'static'))
 );
 
 gulp.task('watch', function() {
-	gulp.watch(paths.src.jade, gulp.series('jade')).on('unlink', function(filepath) {
-		remember.forget('jade', path.resolve(filepath));
-		delete cached.caches.jade[path.resolve(filepath)];
+	gulp.watch(paths.src.html, gulp.series('html')).on('unlink', function(filepath) {
+		remember.forget('html', path.resolve(filepath));
+		delete cached.caches.html[path.resolve(filepath)];
+	});
+
+	gulp.watch(paths.src.pug, gulp.series('pug')).on('unlink', function(filepath) {
+		remember.forget('pug', path.resolve(filepath));
+		delete cached.caches.pug[path.resolve(filepath)];
 	});
 
 	gulp.watch(paths.src.stylus, gulp.series('stylus')).on('unlink', function(filepath) {
@@ -291,7 +401,7 @@ gulp.task('watch', function() {
 		delete cached.caches.jscopy[path.resolve(filepath)];
 	});
 
-	gulp.watch(path.src.fonts, gulp.series('fonts')).on('unlink', function(filepath) {
+	gulp.watch('path.src.fonts', gulp.series('fonts')).on('unlink', function(filepath) {
 		remember.forget('fonts', path.resolve(filepath));
 		delete cached.caches.fonts[path.resolve(filepath)];
 	});
@@ -301,6 +411,18 @@ gulp.task('watch', function() {
 		delete cached.caches.static[path.resolve(filepath)];
 	});
 });
+
+gulp.task('serve', function () {
+	browserSync.use(htmlInjector, {
+		files: "public/*.html"
+	});
+	browserSync.init({
+		server: 'public',
+	});
+
+	browserSync.watch('public/**/*.*').on('change', browserSync.reload);
+});
+
 
 gulp.task('dev', gulp.series(
 	'build',

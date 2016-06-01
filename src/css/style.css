@@ -60,7 +60,8 @@ $npofopr_text: yellow;
 }
 
 /* Property Lookup */
-.heading {
+.heading,
+.logo {
     margin: 20px;
     padding: @margin;
 }
@@ -454,6 +455,11 @@ $npofopr_text: yellow;
 	box-shadow: 1px 1px 1px red;
 	opacity: .5;
 	text-shadow: 0 1px 1px black;
+	background-image: resolve(contact1.jpg);
+}
+.npofopr2 {
+	background: inline(../images/contact1.jpg);
+	size: 100px;
 }
 
 main {
