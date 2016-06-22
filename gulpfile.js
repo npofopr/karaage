@@ -30,6 +30,7 @@ const imagemin = require('gulp-imagemin');
 const pngquant = require('imagemin-pngquant');
 const jpegtran = require('imagemin-jpegtran');
 const gifsicle = require('imagemin-gifsicle');
+const evilIcons = require("gulp-evil-icons");
 
 const stylus = require('gulp-stylus');
 const concat = require('gulp-concat');
@@ -189,6 +190,7 @@ gulp.task('pug', function() {
 		.pipe(gulp.dest(paths.public.pug))
 		.pipe(htmlhint('.htmlhintrc'))
 		.pipe(htmlhint.reporter())
+		.pipe(evilIcons())
 		.pipe(gulp.dest(paths.public.pug))
 
 });
